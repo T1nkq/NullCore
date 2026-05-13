@@ -1,8 +1,8 @@
 [
   {
-    "Title": "NullCore news is live",
+    "Title": "NullCore 1.1.0.7",
     "Date": "2026-05-13",
-    "Content": "The News page now loads updates directly from the NullCore repository. This keeps release notes and project updates under t1nkq's GitHub account.",
+    "Content": "News now loads directly from the NullCore repository. The About page was cleaned for t1nkq and DeniskaaaXD, sponsors/translators/co-authors were removed, and visible Voidstrap branding was replaced with NullCore.",
     "ImageUrl": "https://raw.githubusercontent.com/T1nkq/NullCore/main/1748248817498.png"
   }
 ]
