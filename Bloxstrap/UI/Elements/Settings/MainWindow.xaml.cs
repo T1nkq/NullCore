@@ -66,10 +66,6 @@ namespace Voidstrap.UI.Elements.Settings
             InitializeViewModel();
             InitializeWindowState();
             UpdateButtonContent();
-            App.Settings.Prop.UseDiscordRichPresence = false;
-            App.Settings.Prop.VoidRPC = false;
-            App.Settings.Prop.SnowWOWSOCOOLWpfSnowbtw = false;
-            App.Settings.Prop.GRADmentFR = false;
             RegisterHoverIcons();
             GlobalSearchBox.TextChanged += GlobalSearchBox_TextChanged;
             GlobalSearchBox.LostFocus += GlobalSearchBox_LostFocus;

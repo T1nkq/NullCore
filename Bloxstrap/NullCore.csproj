@@ -11,8 +11,8 @@
 		<ApplicationIcon>Voidstrap.ico</ApplicationIcon>
 		<AssemblyName>NullCore</AssemblyName>
 		<Product>NullCore</Product>
-		<Version>1.1.0.8</Version>
-		<FileVersion>1.1.0.8</FileVersion>
+		<Version>1.1.0.9</Version>
+		<FileVersion>1.1.0.9</FileVersion>
 		<ApplicationManifest>app.manifest</ApplicationManifest>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<RootNamespace>Voidstrap</RootNamespace>
@@ -137,7 +137,6 @@
 	<ItemGroup>
 		<PackageReference Include="AvalonEdit" Version="6.3.1.120" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-		<PackageReference Include="DiscordRichPresence" Version="1.6.1.70" />
 		<PackageReference Include="Markdig" Version="1.1.1" />
 		<PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.3" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="10.0.3" />
@@ -151,6 +150,7 @@
 		</PackageReference>
 		<PackageReference Include="NAudio" Version="2.2.1" />
 		<PackageReference Include="NLua" Version="1.7.9" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="securifybv.ShellLink" Version="0.1.0" />
 		<PackageReference Include="SharpCompress" Version="0.47.0" />
 		<PackageReference Include="SharpDX" Version="4.2.0" />
@@ -160,7 +160,6 @@
 		<PackageReference Include="SharpDX.DXGI" Version="4.2.0" />
 		<PackageReference Include="SharpDX.Mathematics" Version="4.2.0" />
 		<PackageReference Include="SharpZipLib" Version="1.4.2" />
-		<PackageReference Include="SpotifyAPI.Web" Version="7.4.2" />
 		<PackageReference Include="System.IO.Compression.ZipFile" Version="4.3.0" />
 		<PackageReference Include="System.Management" Version="10.0.3" />
 		<PackageReference Include="System.Net.Http" Version="4.3.4" />

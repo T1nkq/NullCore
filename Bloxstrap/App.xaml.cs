@@ -1,5 +1,3 @@
-using DiscordRPC;
-using DiscordRPC.Logging;
 using Microsoft.Win32;
 using System.IO.Compression;
 using System.Reflection;
@@ -12,7 +10,6 @@ using System.Windows.Shell;
 using System.Windows.Threading;
 using Voidstrap.Integrations;
 using Voidstrap.UI.Elements.Bootstrapper;
-using Voidstrap.UI.ViewModels.ContextMenu;
 using Wpf.Ui.Hardware;
 
 namespace Voidstrap
@@ -29,8 +26,6 @@ namespace Voidstrap
         public const string ProjectDownloadLink = "https://github.com/T1nkq/NullCore/releases";
         public const string ProjectHelpLink = "https://github.com/T1nkq/NullCore#readme";
         public const string ProjectSupportLink = "https://github.com/T1nkq/NullCore/issues/new";
-        public const string DiscordApplicationId = "";
-
         public const string RobloxPlayerAppName = "RobloxPlayerBeta";
         public const string RobloxStudioAppName = "RobloxStudioBeta";
         public const string UninstallKey = $@"Software\Microsoft\Windows\CurrentVersion\Uninstall\{ProjectName}";
@@ -83,8 +78,6 @@ namespace Voidstrap
 
         public static readonly GBSEditor GlobalSettings = new();
 
-        private CancellationTokenSource? _memoryTrimCts;
-
         private static HttpClient? _httpClient;
         public static HttpClient HttpClient => _httpClient ??= new HttpClient(
             new HttpClientLoggingHandler(
@@ -93,8 +86,6 @@ namespace Voidstrap
         );
 
         private static bool _showingExceptionDialog = false;
-        public static DiscordRpcClient? DiscordClient;
-
         public static void Terminate(ErrorCode exitCode = ErrorCode.ERROR_SUCCESS)
         {
             int exitCodeNum = (int)exitCode;
@@ -335,54 +326,6 @@ namespace Voidstrap
                 FastFlags.Load();
                 Settings.Load();
 
-                try
-                {
-                    if (App.Settings.Prop.ClearFont)
-                    {
-                        EventManager.RegisterClassHandler(
-                            typeof(Window),
-                            FrameworkElement.LoadedEvent,
-                            new RoutedEventHandler((sender, e) =>
-                            {
-                                if (sender is Window window)
-                                {
-                                    TextOptions.SetTextRenderingMode(window, TextRenderingMode.ClearType);
-                                    TextOptions.SetTextFormattingMode(window, TextFormattingMode.Display);
-
-                                    window.UseLayoutRounding = true;
-                                    window.SnapsToDevicePixels = true;
-
-                                    RenderOptions.SetClearTypeHint(window, ClearTypeHint.Enabled);
-                                    foreach (var textBlock in window.FindVisualChildren<System.Windows.Controls.TextBlock>())
-                                    {
-                                        TextOptions.SetTextRenderingMode(textBlock, TextRenderingMode.ClearType);
-                                        TextOptions.SetTextFormattingMode(textBlock, TextFormattingMode.Display);
-                                    }
-                                }
-                            })
-                        );
-                    }
-                }
-                catch
-                {
-                }
-
-                if (App.Settings.Prop.SmooothBARRyesirikikthxlucipook)
-                {
-                    await Task.Delay(50);
-                    System.Runtime.CompilerServices.RuntimeHelpers
-                        .RunClassConstructor(typeof(Helpers.SmoothScrollBehavior).TypeHandle);
-                }
-                TrimTimer();
-                var rpcVm = new RPCCustomizerViewModel();
-                if (rpcVm.AutoStartRpc && !string.IsNullOrWhiteSpace(rpcVm.ApplicationId))
-                {
-                    rpcVm.GetType()
-                         .GetMethod("SafeStartRpc", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?
-                         .Invoke(rpcVm, null);
-                }
-                Current.Resources["RPCCustomizerVM"] = rpcVm;
-
                 if (Settings?.Prop?.WPFSoftwareRender == true)
                 {
                     HardwareAcceleration.DisableAllAnimations();
@@ -408,63 +351,8 @@ namespace Voidstrap
             }
         }
 
-        private void TrimTimer()
-        {
-            _memoryTrimCts = new CancellationTokenSource();
-            CancellationToken token = _memoryTrimCts.Token;
-
-            Task.Run(async () =>
-            {
-                while (!token.IsCancellationRequested)
-                {
-                    try
-                    {
-                        if (DiscordClient != null)
-                        {
-                            GC.Collect();
-                            GC.WaitForPendingFinalizers();
-                            GC.Collect();
-#if NET5_0_OR_GREATER
-                            System.Runtime.GCSettings.LargeObjectHeapCompactionMode =
-                                System.Runtime.GCLargeObjectHeapCompactionMode.CompactOnce;
-                            GC.Collect();
-#endif
-                            Logger.WriteLine("App::MemoryTrim", "Memory trimmed successfully (background).");
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.WriteException("App::MemoryTrim", ex);
-                    }
-
-                    await Task.Delay(TimeSpan.FromSeconds(5), token);
-                }
-            }, token);
-        }
-
         protected override void OnExit(ExitEventArgs e)
         {
-            try
-            {
-                if (Current.MainWindow?.DataContext is RPCCustomizerViewModel rpcVm)
-                {
-                    rpcVm?.GetType()
-                          .GetMethod("SafeStopRpc", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?
-                          .Invoke(rpcVm, null);
-                }
-
-                DiscordClient?.Dispose();
-                DiscordClient = null;
-                if (Current.MainWindow?.DataContext is MusicPlayerViewModel musicVm)
-                {
-                    musicVm.Dispose();
-                }
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"[OnExit] Cleanup error: {ex.Message}");
-            }
-
             base.OnExit(e);
         }
     }

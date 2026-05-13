@@ -47,13 +47,10 @@ namespace Voidstrap.Models.Persistable
         public bool ConfirmLaunches { get; set; } = true;
         public bool MultiInstanceLaunching { get; set; } = false;
 
-        public bool SmooothBARRyesirikikthxlucipook { get; set; } = false; // wanna keep this on false so people may not be annoyed by it being on
         public bool HasLaunchedGame { get; set; } = false;
         public bool NotificationWindowShow { get; set; } = true;
         public bool BackgroundWindow { get; set; } = true;
         public bool UsePlaceId { get; set; } = false;
-        public bool ClearFont { get; set; } = false;
-        public bool AniWatch { get; set; } = false;
 
         public bool Fleasion { get; set; } = false;
         public string PlaceId { get; set; } = "";
@@ -64,8 +61,6 @@ namespace Voidstrap.Models.Persistable
         public bool ShowServerDetailsUI { get; set; } = false;
         public bool EnableCustomStatusDisplay { get; set; } = true;
         public bool RenameClientToEuroTrucks2 { get; set; } = false;
-        public bool SnowWOWSOCOOLWpfSnowbtw { get; set; } = false;
-
         public bool MotionBlurOverlay { get; set; } = false;
 
         public string ClientPath { get; set; } = Path.Combine(Paths.Base, "Roblox", "Player");
@@ -86,16 +81,12 @@ namespace Voidstrap.Models.Persistable
         public bool ExclusiveFullscreen { get; set; } = false;
         public bool Crosshair { get; set; } = false;
         public bool LockDefault { get; set; } = false;
-        public bool GameWIP { get; set; } = false;
         public bool ForceRobloxLanguage { get; set; } = true;
-
-        public bool IngameChatDiscord { get; set; } = false;
 
         // Analytics & Tracking
         public bool DarkTextures { get; set; } = false;
         public bool EnableActivityTracking { get; set; } = true;
         public bool OverClockCPU { get; set; } = false;
-        public bool exitondissy { get; set; } = false;
         public bool ServerUptimeBetterBLOXcuzitsbetterXD { get; set; } = true;
 
         public string DownloadingStringFormat { get; set; } = Strings.Bootstrapper_Status_Downloading + " {0} - {1}MB / {2}MB";
@@ -103,16 +94,8 @@ namespace Voidstrap.Models.Persistable
 
         public bool Fullbright { get; set; } = false;
 
-        public bool GameIconChecked { get; set; } = true;
         public bool ServerLocationGame { get; set; } = false;
-        public bool GameNameChecked { get; set; } = true;
-        public bool GameCreatorChecked { get; set; } = true;
-        public bool GameStatusChecked { get; set; } = true;
 
-        // Rich Presence (Discord Integration)
-        public bool UseDiscordRichPresence { get; set; } = false;
-        public bool HideRPCButtons { get; set; } = true;
-        public bool ShowAccountOnRichPresence { get; set; } = true;
         public bool MultiAccount { get; set; } = false;
         public bool ShowServerDetails { get; set; } = true;
         public bool EnableLuaScripting { get; set; } = false;
@@ -146,10 +129,6 @@ namespace Voidstrap.Models.Persistable
         public long? TargetUniverseId { get; set; }
         public bool IsBetterServersEnabled { get; set; } = false;
         public bool OverClockGPU { get; set; } = false;
-        public bool GRADmentFR { get; set; } = false;
-        public bool VoidRPC { get; set; } = false;
-
-
         public ResolutionSetting? InGameResolution { get; set; }
 
         public class ResolutionSetting

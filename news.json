@@ -1,8 +1,8 @@
 [
   {
-    "Title": "NullCore 1.1.0.8",
+    "Title": "NullCore 1.1.0.9",
     "Date": "2026-05-13",
-    "Content": "Settings cleanup: Extensions, Appearance, Browser, game history, Extra Supports, and Discord activity status were removed. Deployment remains unchanged.",
+    "Content": "Deep cleanup: removed hidden Discord RPC/custom RPC startup, Discord chat/music/anime extra support windows, and old Appearance toggles that could still run from existing configs. Deployment remains unchanged.",
     "ImageUrl": "https://raw.githubusercontent.com/T1nkq/NullCore/main/1748248817498.png"
   }
 ]

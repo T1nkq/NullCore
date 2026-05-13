@@ -53,8 +53,6 @@ namespace Voidstrap.UI.Elements.ContextMenu
 
         private ServerInformation? _serverInformationWindow;
 
-        private MusicPlayer? _musicplayerWindow;
-
         private GamePassConsole? _GamepassWindow;
 
         private BetterBloxDataCenterConsole? _betterbloxWindow;
@@ -140,27 +138,9 @@ namespace Voidstrap.UI.Elements.ContextMenu
                 _activityWatcher.OnGameJoin += ActivityWatcher_OnGameJoin;
                 _activityWatcher.OnGameLeave += ActivityWatcher_OnGameLeave;
 
-                MusicMenuItem.Visibility = Visibility.Visible;
             }
-
 
             VersionTextBlock.Text = $"{App.ProjectName} v{App.Version}";
-
-            if (App.Settings.Prop.AniWatch)
-            {
-                if (!(App.Current.Resources["AnimeWindow"] is AnimeWindow window))
-                {
-                    window = new AnimeWindow();
-                    App.Current.Resources["AnimeWindow"] = window;
-                }
-                if (!window.IsVisible)
-                {
-                    window.Show();
-                }
-
-                window.MainBorder.Opacity = 0;
-                window.FadeIn();
-            }
         }
 
         public void UpdateCurrentGameInfo(string gameName, string gameIconUrl)
@@ -518,29 +498,6 @@ namespace Voidstrap.UI.Elements.ContextMenu
                 });
             }
 
-            if (App.Settings.Prop.IngameChatDiscord)
-            {
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    if (App.Current.Resources["DiscordChatOverlayWindow"]
-                        is Voidstrap.UI.Elements.Overlay.DiscordChatOverlayWindow existing)
-                    {
-                        if (existing.IsLoaded)
-                        {
-                            return;
-                        }
-                        else
-                        {
-                            App.Current.Resources.Remove("DiscordChatOverlayWindow");
-                        }
-                    }
-
-                    var discordOverlay = new Voidstrap.UI.Elements.Overlay.DiscordChatOverlayWindow();
-                    discordOverlay.Show();
-                    App.Current.Resources["DiscordChatOverlayWindow"] = discordOverlay;
-                });
-            }
-
             if (App.Settings.Prop.OverlaysEnabled)
             {
                 Application.Current.Dispatcher.Invoke(() =>
@@ -603,12 +560,6 @@ namespace Voidstrap.UI.Elements.ContextMenu
                 {
                     overlay.Close();
                     App.Current.Resources.Remove("OverlayWindow");
-                }
-
-                if (App.Current.Resources["DiscordChatOverlayWindow"] is Voidstrap.UI.Elements.Overlay.DiscordChatOverlayWindow discordOverlay)
-                {
-                    discordOverlay.Close();
-                    App.Current.Resources.Remove("DiscordChatOverlayWindow");
                 }
 
                 if (RobloxLightingOverlay.OverlayManager.UI != null)
@@ -741,23 +692,6 @@ namespace Voidstrap.UI.Elements.ContextMenu
                 _betterbloxWindow.ShowDialog();
             else
                 _betterbloxWindow.Activate();
-        }
-
-        private void MusicPlayerMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            if (_activityWatcher is null)
-                throw new ArgumentNullException(nameof(_activityWatcher));
-
-            if (_musicplayerWindow is null)
-            {
-                _musicplayerWindow = new MusicPlayer();
-                _musicplayerWindow.Closed += (_, _) => _musicplayerWindow = null;
-            }
-
-            if (!_musicplayerWindow.IsVisible)
-                _musicplayerWindow.ShowDialog();
-            else
-                _musicplayerWindow.Activate();
         }
 
         private void OutputConsoleMenuItem_Click(object sender, RoutedEventArgs e)
