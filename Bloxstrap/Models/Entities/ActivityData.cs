@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Windows;
-using System.Windows.Input;
-using CommunityToolkit.Mvvm.Input;
 using Voidstrap.AppData;
 using Voidstrap.Models.APIs;
 
@@ -16,7 +13,6 @@ namespace Voidstrap.Models.Entities
     public class ActivityData
     {
         private long _universeId = 0;
-        public ActivityData? RootActivity;
 
         public long UniverseId
         {
@@ -27,25 +23,6 @@ namespace Voidstrap.Models.Entities
                 UniverseDetails = UniverseDetails.LoadFromCache(value);
             }
         }
-
-        #region Display Properties
-        public string DisplayTimeJoined { get; private set; } = "Unknown";
-        public string DisplayTimeLeft { get; private set; } = "Unknown";
-        public string ServerStatus { get; private set; } = "Offline";
-
-        public void ComputeDisplayTimes()
-        {
-            DisplayTimeJoined = TimeJoined != default
-                ? TimeJoined.ToString("yyyy-MM-dd HH:mm:ss")
-                : "Unknown";
-
-            bool online = !TimeLeft.HasValue || (DateTime.Now - TimeLeft.Value).TotalHours < 24;
-            DisplayTimeLeft = TimeLeft.HasValue
-                ? TimeLeft.Value.ToString("yyyy-MM-dd HH:mm:ss")
-                : "Still Online";
-            ServerStatus = online ? "Online" : "Offline";
-        }
-        #endregion
 
         #region Existing Classes
         public class UserLog
@@ -79,29 +56,6 @@ namespace Voidstrap.Models.Entities
         public UniverseDetails? UniverseDetails { get; set; }
         public Dictionary<int, UserLog> PlayerLogs { get; internal set; } = new();
         public Dictionary<int, UserMessage> MessageLogs { get; internal set; } = new();
-        #endregion
-
-        #region Derived Properties & Commands
-        public string GameHistoryDescription
-        {
-            get
-            {
-                string desc = string.Format(
-                    "{0} • {1} {2} {3}",
-                    UniverseDetails?.Data.Creator.Name ?? "Unknown",
-                    TimeJoined.ToString("t"),
-                    Locale.CurrentCulture.Name.StartsWith("ja") ? '~' : '-',
-                    TimeLeft?.ToString("t") ?? "?"
-                );
-
-                if (ServerType != ServerType.Public)
-                    desc += " • " + ServerType.ToTranslatedString();
-
-                return desc;
-            }
-        }
-
-        public ICommand RejoinServerCommand => new RelayCommand(RejoinServer);
         #endregion
 
         #region Server Methods
@@ -182,11 +136,6 @@ namespace Voidstrap.Models.Entities
 
         public override string ToString() => $"{PlaceId}/{JobId}";
 
-        private void RejoinServer()
-        {
-            string playerPath = new RobloxPlayerData().ExecutablePath;
-            Process.Start(playerPath, GetInviteDeeplink(false));
-        }
         #endregion
     }
 }

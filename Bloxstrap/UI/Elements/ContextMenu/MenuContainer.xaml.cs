@@ -12,7 +12,6 @@ using Voidstrap.UI.Chat;
 using Voidstrap.UI.Elements.Crosshair;
 using Voidstrap.UI.Elements.FPS;
 using Voidstrap.UI.Elements.Overlay;
-using Voidstrap.UI.Elements.Settings.Pages;
 using Voidstrap.UI.ViewModels;
 using Voidstrap.UI.ViewModels.Settings;
 using Windows.Win32;
@@ -34,6 +33,17 @@ namespace Voidstrap.UI.Elements.ContextMenu
         private DispatcherTimer closestServerTimer;
         private Server? lastClosestServer;
 
+        private sealed class ServerResponse
+        {
+            public List<Server> Data { get; set; } = new();
+        }
+
+        private sealed class Server
+        {
+            public string Id { get; set; } = string.Empty;
+            public int Ping { get; set; }
+        }
+
         [DllImport("kernel32.dll")]
         private static extern bool SetProcessWorkingSetSize(IntPtr proc, UIntPtr min, UIntPtr max);
 
@@ -42,8 +52,6 @@ namespace Voidstrap.UI.Elements.ContextMenu
         private ActivityWatcher? _activityWatcher => _watcher.ActivityWatcher;
 
         private ServerInformation? _serverInformationWindow;
-
-        private ServerHistory? _gameHistoryWindow;
 
         private MusicPlayer? _musicplayerWindow;
 
@@ -132,13 +140,9 @@ namespace Voidstrap.UI.Elements.ContextMenu
                 _activityWatcher.OnGameJoin += ActivityWatcher_OnGameJoin;
                 _activityWatcher.OnGameLeave += ActivityWatcher_OnGameLeave;
 
-                if (!App.Settings.Prop.UseDisableAppPatch) // why the fuck was there 2 of them my bitch ass
-                    GameHistoryMenuItem.Visibility = Visibility.Visible;
                 MusicMenuItem.Visibility = Visibility.Visible;
             }
 
-            if (_watcher.RichPresence is not null)
-                RichPresenceMenuItem.Visibility = Visibility.Visible;
 
             VersionTextBlock.Text = $"{App.ProjectName} v{App.Version}";
 
@@ -678,8 +682,6 @@ namespace Voidstrap.UI.Elements.ContextMenu
 
         private void Window_Closed(object sender, EventArgs e) => App.Logger.WriteLine("MenuContainer::Window_Closed", "Context menu container closed");
 
-        private void RichPresenceMenuItem_Click(object sender, RoutedEventArgs e) => _watcher.RichPresence?.SetVisibility(((MenuItem)sender).IsChecked);
-
         private void InviteDeeplinkMenuItem_Click(object sender, RoutedEventArgs e) => Clipboard.SetDataObject(_activityWatcher?.Data.GetInviteDeeplink());
 
         private void ServerDetailsMenuItem_Click(object sender, RoutedEventArgs e) => ShowServerInformationWindow();
@@ -706,22 +708,6 @@ namespace Voidstrap.UI.Elements.ContextMenu
             _watcher.KillRobloxProcess();
         }
 
-        private void JoinLastServerMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            if (_activityWatcher is null)
-                throw new ArgumentNullException(nameof(_activityWatcher));
-
-            if (_gameHistoryWindow is null)
-            {
-                _gameHistoryWindow = new(_activityWatcher);
-                _gameHistoryWindow.Closed += (_, _) => _gameHistoryWindow = null;
-            }
-
-            if (!_gameHistoryWindow.IsVisible)
-                _gameHistoryWindow.ShowDialog();
-            else
-                _gameHistoryWindow.Activate();
-        }
         private void GamePassDetailsMenuItem_Click(object sender, RoutedEventArgs e)
         {
             if (_activityWatcher is null)

@@ -15,8 +15,6 @@ namespace Voidstrap
 
         public readonly ActivityWatcher? ActivityWatcher;
 
-        public readonly DiscordRichPresence? RichPresence;
-
         public readonly IntegrationWatcher? IntegrationWatcher;
 
         public Watcher()
@@ -63,12 +61,6 @@ namespace Voidstrap
                         process.CloseMainWindow();
                     };
                 }
-
-                if (App.Settings.Prop.UseDiscordRichPresence && !string.IsNullOrWhiteSpace(App.DiscordApplicationId))
-                    RichPresence = new(ActivityWatcher);
-                else if (App.Settings.Prop.UseDiscordRichPresence)
-                    App.Logger.WriteLine(LOG_IDENT, "Discord Rich Presence is disabled because no NullCore Discord application ID is configured.");
-
 
                 IntegrationWatcher = new IntegrationWatcher(ActivityWatcher);
             }
@@ -132,8 +124,6 @@ namespace Voidstrap
 
             IntegrationWatcher?.Dispose();
             _notifyIcon?.Dispose();
-            RichPresence?.Dispose();
-
             GC.SuppressFinalize(this);
         }
     }

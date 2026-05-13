@@ -135,14 +135,6 @@
             <Separator/>
 
             <MenuItem
-                x:Name="RichPresenceMenuItem"
-                Header="{x:Static resources:Strings.Common_DiscordRichPresence}"
-                IsCheckable="True"
-                IsChecked="True"
-                Visibility="Collapsed"
-                Click="RichPresenceMenuItem_Click"/>
-            
-            <MenuItem
                 x:Name="InviteDeeplinkMenuItem"
                 Visibility="Collapsed"
                 Click="InviteDeeplinkMenuItem_Click">
@@ -275,26 +267,6 @@
 
                         <ui:SymbolIcon Grid.Column="0" Symbol="MusicNote224"/>
                         <TextBlock Grid.Column="1" Margin="4,0,0,0" Text="Music Player"/>
-                    </Grid>
-                </MenuItem.Header>
-            </MenuItem>
-
-            <MenuItem
-                x:Name="GameHistoryMenuItem"
-                Visibility="Collapsed"
-                Click="JoinLastServerMenuItem_Click">
-                <MenuItem.Header>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="24"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-
-                        <ui:SymbolIcon Grid.Column="0" Symbol="History24"/>
-                        <TextBlock
-                            Grid.Column="1"
-                            Margin="4,0,0,0"
-                            Text="{x:Static resources:Strings.ContextMenu_GameHistory_Title}"/>
                     </Grid>
                 </MenuItem.Header>
             </MenuItem>

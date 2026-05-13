@@ -1,8 +1,8 @@
 [
   {
-    "Title": "NullCore 1.1.0.7",
+    "Title": "NullCore 1.1.0.8",
     "Date": "2026-05-13",
-    "Content": "News now loads directly from the NullCore repository. The About page was cleaned for t1nkq and DeniskaaaXD, sponsors/translators/co-authors were removed, and visible Voidstrap branding was replaced with NullCore.",
+    "Content": "Settings cleanup: Extensions, Appearance, Browser, game history, Extra Supports, and Discord activity status were removed. Deployment remains unchanged.",
     "ImageUrl": "https://raw.githubusercontent.com/T1nkq/NullCore/main/1748248817498.png"
   }
 ]

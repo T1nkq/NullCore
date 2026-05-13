@@ -1,5 +1,3 @@
-using DiscordRPC;
-using DiscordRPC.Logging;
 using Microsoft.VisualBasic.ApplicationServices;
 using Microsoft.Web.WebView2.Core;
 using System;
@@ -40,12 +38,6 @@ namespace Voidstrap.UI.Elements.Settings
         private readonly List<Snowflake> _snowflakes = new();
         private readonly DispatcherTimer _snowTimer;
         private readonly DispatcherTimer _visibilityTimer = new DispatcherTimer();
-        private DiscordRpcClient? _discordClient;
-        private bool _discordRpcEnabled = App.Settings.Prop.VoidRPC;
-        private AppearanceViewModel _appearanceViewModel;
-        private DispatcherTimer _backgroundUpdateTimer;
-        private string? _currentBackgroundPath;
-        private FileSystemWatcher? _appearanceViewModelWatcher;
         private bool _spotifyInitialized = false;
         private Vector _currentOffset;
         private Vector _targetOffset;
@@ -66,7 +58,6 @@ namespace Voidstrap.UI.Elements.Settings
         typeof(NvidiaFFlagEditorPage),
         typeof(ReleasesPage),
         typeof(DonoPage),
-        typeof(ServerBrowserPage),
         };
 
         public MainWindow(bool showAlreadyRunningWarning)
@@ -75,12 +66,11 @@ namespace Voidstrap.UI.Elements.Settings
             InitializeViewModel();
             InitializeWindowState();
             UpdateButtonContent();
-            if (_discordRpcEnabled)
-                InitializeDiscordRPC();
+            App.Settings.Prop.UseDiscordRichPresence = false;
+            App.Settings.Prop.VoidRPC = false;
+            App.Settings.Prop.SnowWOWSOCOOLWpfSnowbtw = false;
+            App.Settings.Prop.GRADmentFR = false;
             RegisterHoverIcons();
-            _appearanceViewModel = new AppearanceViewModel();
-            InitializeBackgroundSettingsWatcher();
-            ApplyBackgroundSettings();
             GlobalSearchBox.TextChanged += GlobalSearchBox_TextChanged;
             GlobalSearchBox.LostFocus += GlobalSearchBox_LostFocus;
             // shi finna be laggy :sob:
@@ -92,15 +82,6 @@ namespace Voidstrap.UI.Elements.Settings
                 Interval = TimeSpan.FromMilliseconds(50)
             };
             _snowTimer.Tick += SnowTimer_Tick;
-            _currentBackgroundPath = _appearanceViewModel.BackgroundFilePath;
-
-            _backgroundUpdateTimer = new DispatcherTimer
-            {
-                Interval = TimeSpan.FromSeconds(1)
-            };
-            _backgroundUpdateTimer.Tick += BackgroundUpdateTimer_Tick;
-            _backgroundUpdateTimer.Start();
-
             Loaded += MainWindow_Loaded;
             SizeChanged += MainWindow_SizeChanged;
 
@@ -388,16 +369,11 @@ namespace Voidstrap.UI.Elements.Settings
             CreateToolItem(Strings.Menu_Integrations_EnableActivityTracking_Title, Strings.Menu_Integrations_EnableActivityTracking_Description);
             CreateToolItem(Strings.Menu_Integrations_QueryServerLocation_Title, Strings.Menu_Integrations_QueryServerLocation_Description);
             CreateToolItem(Strings.Menu_Integrations_DesktopApp_Title, Strings.Menu_Integrations_DesktopApp_Description);
-            CreateToolItem(Strings.Menu_Integrations_ShowGameActivity_Title, Strings.Menu_Integrations_ShowGameActivity_Description);
-            CreateToolItem(Strings.Menu_Integrations_ShowAccountOnProfile_Title, Strings.Menu_Integrations_ShowAccountOnProfile_Description);
             CreateToolItem(Strings.Menu_Behaviour_ConfirmLaunches_Title, Strings.Menu_Behaviour_ConfirmLaunches_Description);
             CreateToolItem(Strings.Menu_Behaviour_ForceRobloxLanguage_Title, Strings.Menu_Behaviour_ForceRobloxLanguage_Description);
             CreateToolItem("Disable Background Window", "Disables Background Window when Launching Roblox");
             CreateToolItem("Disable RobloxCrashHandler", "Disables the RobloxCrashHandler that runs on startup, improving memory and RAM efficiency.");
             CreateToolItem("Exclusive Fullscreen", "Enables exclusive fullscreen mode. This may fix latency issues.");
-            CreateToolItem("Background Snow", "Adds Snow to Voidstraps background (Restart Required)");
-            CreateToolItem("Gradient Movement", "Adds a Gradient Movement with Cursor (Restart Required)");
-            CreateToolItem("Smooth ScrollBar", "Adds a Smooth ScrollBar Movement (Restart Required)");
 
             toolboxWindow.ShowDialog();
         }
@@ -712,16 +688,11 @@ namespace Voidstrap.UI.Elements.Settings
                 case var s when s == Strings.Menu_Integrations_EnableActivityTracking_Title: App.Settings.Prop.EnableActivityTracking = isOn; break;
                 case var s when s == Strings.Menu_Integrations_QueryServerLocation_Title: App.Settings.Prop.ShowServerDetails = isOn; break;
                 case var s when s == Strings.Menu_Integrations_DesktopApp_Title: App.Settings.Prop.UseDisableAppPatch = isOn; break;
-                case var s when s == Strings.Menu_Integrations_ShowGameActivity_Title: App.Settings.Prop.UseDiscordRichPresence = isOn; break;
-                case var s when s == Strings.Menu_Integrations_ShowAccountOnProfile_Title: App.Settings.Prop.ShowAccountOnRichPresence = isOn; break;
                 case var s when s == Strings.Menu_Behaviour_ConfirmLaunches_Title: App.Settings.Prop.ConfirmLaunches = isOn; break;
                 case var s when s == Strings.Menu_Behaviour_ForceRobloxLanguage_Title: App.Settings.Prop.ForceRobloxLanguage = isOn; break;
                 case "Disable Background Window": App.Settings.Prop.BackgroundWindow = isOn; break;
                 case "Disable RobloxCrashHandler": App.Settings.Prop.DisableCrash = isOn; break;
                 case "Exclusive Fullscreen": App.Settings.Prop.ExclusiveFullscreen = isOn; break;
-                case "Background Snow": App.Settings.Prop.SnowWOWSOCOOLWpfSnowbtw = isOn; break;
-                case "Gradient Movement": App.Settings.Prop.GRADmentFR = isOn; break;
-                case "Smooth ScrollBar": App.Settings.Prop.SmooothBARRyesirikikthxlucipook = isOn; break;
             }
         }
 
@@ -740,16 +711,11 @@ namespace Voidstrap.UI.Elements.Settings
                     var s when s == Strings.Menu_Integrations_EnableActivityTracking_Title => App.Settings.Prop.EnableActivityTracking,
                     var s when s == Strings.Menu_Integrations_QueryServerLocation_Title => App.Settings.Prop.ShowServerDetails,
                     var s when s == Strings.Menu_Integrations_DesktopApp_Title => App.Settings.Prop.UseDisableAppPatch,
-                    var s when s == Strings.Menu_Integrations_ShowGameActivity_Title => App.Settings.Prop.UseDiscordRichPresence,
-                    var s when s == Strings.Menu_Integrations_ShowAccountOnProfile_Title => App.Settings.Prop.ShowAccountOnRichPresence,
                     var s when s == Strings.Menu_Behaviour_ConfirmLaunches_Title => App.Settings.Prop.ConfirmLaunches,
                     var s when s == Strings.Menu_Behaviour_ForceRobloxLanguage_Title => App.Settings.Prop.ForceRobloxLanguage,
                     "Disable Background Window" => App.Settings.Prop.BackgroundWindow,
                     "Disable RobloxCrashHandler" => App.Settings.Prop.DisableCrash,
                     "Exclusive Fullscreen" => App.Settings.Prop.ExclusiveFullscreen,
-                    "Background Snow" => App.Settings.Prop.SnowWOWSOCOOLWpfSnowbtw,
-                    "Gradient Movement" => App.Settings.Prop.GRADmentFR,
-                    "Smooth ScrollBar" => App.Settings.Prop.SmooothBARRyesirikikthxlucipook,
                     _ => false
                 };
             }
@@ -767,16 +733,11 @@ namespace Voidstrap.UI.Elements.Settings
                     case var s when s == Strings.Menu_Integrations_EnableActivityTracking_Title: App.Settings.Prop.EnableActivityTracking = value; break;
                     case var s when s == Strings.Menu_Integrations_QueryServerLocation_Title: App.Settings.Prop.ShowServerDetails = value; break;
                     case var s when s == Strings.Menu_Integrations_DesktopApp_Title: App.Settings.Prop.UseDisableAppPatch = value; break;
-                    case var s when s == Strings.Menu_Integrations_ShowGameActivity_Title: App.Settings.Prop.UseDiscordRichPresence = value; break;
-                    case var s when s == Strings.Menu_Integrations_ShowAccountOnProfile_Title: App.Settings.Prop.ShowAccountOnRichPresence = value; break;
                     case var s when s == Strings.Menu_Behaviour_ConfirmLaunches_Title: App.Settings.Prop.ConfirmLaunches = value; break;
                     case var s when s == Strings.Menu_Behaviour_ForceRobloxLanguage_Title: App.Settings.Prop.ForceRobloxLanguage = value; break;
                     case "Disable Background Window": App.Settings.Prop.BackgroundWindow = value; break;
                     case "Disable RobloxCrashHandler": App.Settings.Prop.DisableCrash = value; break;
                     case "Exclusive Fullscreen": App.Settings.Prop.ExclusiveFullscreen = value; break;
-                    case "Background Snow": App.Settings.Prop.SnowWOWSOCOOLWpfSnowbtw = value; break;
-                    case "Gradient Movement": App.Settings.Prop.GRADmentFR = value; break;
-                    case "Smooth ScrollBar": App.Settings.Prop.SmooothBARRyesirikikthxlucipook = value; break;
                 }
 
                 RefreshAllSwitches(key, value);
@@ -1043,205 +1004,6 @@ namespace Voidstrap.UI.Elements.Settings
             element.BeginAnimation(UIElement.OpacityProperty, animation);
         }
 
-        private void InitializeBackgroundSettingsWatcher()
-        {
-            string filePath = Path.Combine(Paths.Base, "backgroundSettings.json");
-            string? directory = Path.GetDirectoryName(filePath);
-            string? fileName = Path.GetFileName(filePath);
-
-            if (directory == null || fileName == null)
-                return;
-
-            _appearanceViewModelWatcher = new FileSystemWatcher(directory, fileName)
-            {
-                NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.Size
-            };
-
-            _appearanceViewModelWatcher.Changed += (s, e) =>
-            {
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    try
-                    {
-                        var newSettings = new AppearanceViewModel();
-
-                        _appearanceViewModel.BackgroundFilePath = newSettings.BackgroundFilePath;
-                        _appearanceViewModel.GradientOpacity = newSettings.GradientOpacity;
-                    }
-                    catch {}
-                });
-            };
-
-            _appearanceViewModelWatcher.EnableRaisingEvents = true;
-        }
-
-        private void BackgroundUpdateTimer_Tick(object? sender, EventArgs e)
-        {
-            if (_appearanceViewModel == null) return;
-
-            string? newPath = _appearanceViewModel.BackgroundFilePath;
-
-            if (newPath != _currentBackgroundPath)
-            {
-                SetBackgroundImage(newPath);
-            }
-
-            if (_gradientLayerOpacity != _appearanceViewModel.GradientOpacity)
-                GradientLayerOpacity = _appearanceViewModel.GradientOpacity;
-        }
-
-        private void ApplyBackgroundSettings()
-        {
-            if (!string.IsNullOrEmpty(_appearanceViewModel.BackgroundFilePath))
-                SetBackgroundImage(_appearanceViewModel.BackgroundFilePath);
-
-            GradientLayerOpacity = _appearanceViewModel.GradientOpacity;
-        }
-
-        private double _gradientLayerOpacity = 0;
-        public double GradientLayerOpacity
-        {
-            get => _gradientLayerOpacity;
-            set
-            {
-                if (_gradientLayerOpacity != value)
-                {
-                    _gradientLayerOpacity = value;
-
-                    if (GradientLayer != null)
-                        AnimateOpacity(GradientLayer, _gradientLayerOpacity);
-
-                    if (_appearanceViewModel != null)
-                        _appearanceViewModel.GradientOpacity = _gradientLayerOpacity;
-                }
-            }
-        }
-
-        public async Task SetBackgroundImage(string? path, bool loop = true)
-        {
-            if (BackgroundImage == null || BackgroundMedia == null || GradientLayer == null)
-                return;
-
-            if (BackgroundImage.Visibility == Visibility.Visible)
-                await FadeOutElementAsync(BackgroundImage, 0.3);
-
-            if (BackgroundMedia.Visibility == Visibility.Visible)
-            {
-                BackgroundMedia.Stop();
-                BackgroundMedia.MediaEnded -= BackgroundMedia_MediaEnded;
-                await FadeOutElementAsync(BackgroundMedia, 0.3);
-            }
-
-            WpfAnimatedGif.ImageBehavior.SetAnimatedSource(BackgroundImage, null);
-
-            AnimateOpacity(GradientLayer, _appearanceViewModel?.GradientOpacity ?? 0.5);
-            GradientLayer.Visibility = Visibility.Visible;
-
-            if (string.IsNullOrEmpty(path) || !File.Exists(path))
-            {
-                _currentBackgroundPath = null;
-                BackgroundImage.Visibility = Visibility.Collapsed;
-                BackgroundMedia.Visibility = Visibility.Collapsed;
-                return;
-            }
-
-            _currentBackgroundPath = path;
-            string ext = Path.GetExtension(path).ToLowerInvariant();
-
-            if (ext is ".png" or ".jpg" or ".jpeg" or ".bmp")
-            {
-                var bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                bitmap.UriSource = new Uri(path, UriKind.Absolute);
-                bitmap.EndInit();
-                bitmap.Freeze();
-
-                BackgroundImage.Source = bitmap;
-                BackgroundImage.Visibility = Visibility.Visible;
-                BackgroundMedia.Visibility = Visibility.Collapsed;
-
-                await FadeInElementAsync(BackgroundImage, 0.5);
-            }
-            else if (ext == ".gif")
-            {
-                var gifSource = new BitmapImage(new Uri(path, UriKind.Absolute));
-                WpfAnimatedGif.ImageBehavior.SetAnimatedSource(BackgroundImage, gifSource);
-                WpfAnimatedGif.ImageBehavior.SetRepeatBehavior(
-                    BackgroundImage,
-                    loop ? System.Windows.Media.Animation.RepeatBehavior.Forever : new System.Windows.Media.Animation.RepeatBehavior(1)
-                );
-
-                BackgroundImage.Visibility = Visibility.Visible;
-                BackgroundMedia.Visibility = Visibility.Collapsed;
-
-                await FadeInElementAsync(BackgroundImage, 0.5);
-            }
-            else if (ext is ".mp4" or ".webm" or ".avi" or ".mov")
-            {
-                BackgroundMedia.Source = new Uri(path, UriKind.Absolute);
-                BackgroundMedia.Visibility = Visibility.Visible;
-                BackgroundImage.Visibility = Visibility.Collapsed;
-                BackgroundMedia.LoadedBehavior = MediaState.Manual;
-                BackgroundMedia.UnloadedBehavior = MediaState.Stop;
-                BackgroundMedia.Volume = 0;
-
-                if (loop)
-                    BackgroundMedia.MediaEnded += BackgroundMedia_MediaEnded;
-
-                BackgroundMedia.Play();
-                await FadeInElementAsync(BackgroundMedia, 0.5);
-            }
-        }
-
-        private Task FadeOutElementAsync(UIElement element, double durationSeconds)
-        {
-            if (element == null) return Task.CompletedTask;
-
-            var tcs = new TaskCompletionSource<bool>();
-            var animation = new DoubleAnimation
-            {
-                To = 0,
-                Duration = TimeSpan.FromSeconds(durationSeconds),
-                EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseInOut }
-            };
-            animation.Completed += (s, e) =>
-            {
-                element.Visibility = Visibility.Collapsed;
-                tcs.SetResult(true);
-            };
-            element.BeginAnimation(UIElement.OpacityProperty, animation);
-            return tcs.Task;
-        }
-
-        private Task FadeInElementAsync(UIElement element, double durationSeconds)
-        {
-            if (element == null) return Task.CompletedTask;
-
-            var tcs = new TaskCompletionSource<bool>();
-            element.Visibility = Visibility.Visible;
-
-            var animation = new DoubleAnimation
-            {
-                To = 1,
-                Duration = TimeSpan.FromSeconds(durationSeconds),
-                EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseInOut }
-            };
-            animation.Completed += (s, e) => tcs.SetResult(true);
-            element.BeginAnimation(UIElement.OpacityProperty, animation);
-
-            return tcs.Task;
-        }
-
-        private void BackgroundMedia_MediaEnded(object? sender, RoutedEventArgs e)
-        {
-            if (sender is MediaElement media)
-            {
-                media.Position = TimeSpan.Zero;
-                media.Play();
-            }
-        }
-
         private void RootGrid_MouseMove(object sender, MouseEventArgs e)
         {
             if (sender is not FrameworkElement fe)
@@ -1275,117 +1037,6 @@ namespace Voidstrap.UI.Elements.Settings
             BackgroundGradientRotate.Angle = _currentRotation;
         }
 
-        private void InitializeDiscordRPC()
-        {
-            if (string.IsNullOrWhiteSpace(App.DiscordApplicationId))
-            {
-                App.Logger.WriteLine("DiscordRPC", "Settings Discord RPC is disabled because no NullCore Discord application ID is configured.");
-                _discordRpcEnabled = false;
-                return;
-            }
-
-            _discordClient = new DiscordRpcClient(App.DiscordApplicationId);
-
-            _discordClient.Logger = new ConsoleLogger() { Level = LogLevel.Warning };
-            _discordClient.OnReady += (sender, e) =>
-            {
-                App.Logger.WriteLine("DiscordRPC", $"Connected to Discord as {e.User.Username}");
-            };
-
-            _discordClient.OnError += (sender, e) =>
-            {
-                App.Logger.WriteLine("DiscordRPC", $"DiscordRPC Error: {e.Message}");
-            };
-
-            _discordClient.Initialize();
-
-            if (RootNavigation != null)
-            {
-                RootNavigation.Navigated += (s, e) => UpdateDiscordPresence();
-            }
-
-            UpdateDiscordPresence();
-        }
-
-        private string GetCurrentPageName()
-        {
-            if (RootNavigation == null)
-                return "Idle";
-
-            object? selectedItem = null;
-            if (RootNavigation.Items != null &&
-                RootNavigation.SelectedPageIndex >= 0 &&
-                RootNavigation.SelectedPageIndex < RootNavigation.Items.Count)
-            {
-                selectedItem = RootNavigation.Items[RootNavigation.SelectedPageIndex];
-            }
-
-            if (selectedItem is Wpf.Ui.Controls.NavigationItem navItem)
-            {
-                if (!string.IsNullOrWhiteSpace(navItem.Content?.ToString()))
-                    return navItem.Content!.ToString();
-
-                if (navItem.PageType != null)
-                    return navItem.PageType.Name;
-            }
-
-            if (RootFrame?.Content != null)
-            {
-                return RootFrame.Content.GetType().Name;
-            }
-
-            return "Idle";
-        }
-
-        public void ToggleDiscordRPC(bool enabled)
-        {
-            _discordRpcEnabled = enabled;
-
-            if (_discordClient == null && _discordRpcEnabled)
-                InitializeDiscordRPC();
-
-            if (_discordClient == null) return;
-
-            if (!_discordRpcEnabled)
-            {
-                _discordClient.ClearPresence();
-                App.Logger.WriteLine("DiscordRPC", "DiscordRPC disabled.");
-            }
-            else
-            {
-                UpdateDiscordPresence();
-                App.Logger.WriteLine("DiscordRPC", "DiscordRPC enabled.");
-            }
-        }
-
-        private void UpdateDiscordPresence()
-        {
-            if (_discordClient == null || !_discordRpcEnabled) return;
-
-            string pageName = GetCurrentPageName();
-            string currentTime = DateTime.Now.ToString("hh:mm tt");
-
-            _discordClient.SetPresence(new DiscordRPC.RichPresence()
-            {
-                Details = $"Viewing {pageName}",
-                State = $"Current Time: {currentTime}",
-                Timestamps = DiscordRPC.Timestamps.Now,
-                Buttons = new[]
-                {
-            new DiscordRPC.Button
-            {
-                Label = "Discord",
-                Url = "https://discord.gg/bzdbHHytFR"
-            },
-            new DiscordRPC.Button
-            {
-                Label = "GitHub",
-                Url = $"https://github.com/{App.ProjectRepository}"
-            }
-        }
-            });
-        }
-
         private void UpdateFastFlagEditorVisibility()
         {
             if (FastFlagEditorNavItem == null)
@@ -1402,22 +1053,8 @@ namespace Voidstrap.UI.Elements.Settings
         {
             LoadTabsStructure();
             InitializeNavigation();
-            if (App.Settings.Prop.GRADmentFR)
-            {
-                CompositionTarget.Rendering += CompositionTarget_Rendering;
-            }
-            if (App.Settings.Prop.SnowWOWSOCOOLWpfSnowbtw)
-            {
-                InitSnow();
-                _snowTimer.Start();
-                if (SnowCanvas != null)
-                    SnowCanvas.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                if (SnowCanvas != null)
-                    SnowCanvas.Visibility = Visibility.Collapsed;
-            }
+            if (SnowCanvas != null)
+                SnowCanvas.Visibility = Visibility.Collapsed;
 
             await Dispatcher.InvokeAsync(() => { }, System.Windows.Threading.DispatcherPriority.Loaded);
 
@@ -1528,8 +1165,7 @@ namespace Voidstrap.UI.Elements.Settings
         protected override void OnActivated(EventArgs e)
         {
             base.OnActivated(e);
-            if (App.Settings.Prop.SnowWOWSOCOOLWpfSnowbtw)
-                _snowTimer.Start();
+            _snowTimer.Stop();
         }
 
         protected override void OnDeactivated(EventArgs e)
@@ -1673,7 +1309,6 @@ namespace Voidstrap.UI.Elements.Settings
         private void SaveNavigation(INavigation sender, RoutedNavigationEventArgs e)
         {
             App.State.Prop.LastPage = RootNavigation.SelectedPageIndex;
-            UpdateDiscordPresence();
         }
 
         #endregion

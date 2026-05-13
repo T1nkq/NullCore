@@ -73,12 +73,6 @@
                     <ui:ToggleSwitch IsChecked="{Binding VoidNotify, Mode=TwoWay}" />
                 </controls:OptionControl>
 
-                <controls:OptionControl
-            Description="Displays NullCore Discord RPC."
-            Header="NullCore RPC">
-                    <ui:ToggleSwitch IsChecked="{Binding VoidRPC, Mode=TwoWay}" />
-                </controls:OptionControl>
-
             </StackPanel>
         </Expander>
 

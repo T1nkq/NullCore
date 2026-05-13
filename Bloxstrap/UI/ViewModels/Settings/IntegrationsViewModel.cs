@@ -17,10 +17,6 @@ namespace Voidstrap.UI.ViewModels.Settings
         public ICommand AddIntegrationCommand => new RelayCommand(AddIntegration);
         public ICommand DeleteIntegrationCommand => new RelayCommand(DeleteIntegration);
         public ICommand BrowseIntegrationLocationCommand => new RelayCommand(BrowseIntegrationLocation);
-        public ICommand OpenHistoryWindowCommand { get; }
-        public ICommand MusicWindowCommand { get; }
-        public ICommand ChatModeWindowCommand { get; }
-        public ICommand RPCWindowCommand { get; }
         public ICommand AccountWindowCommand { get; }
 
         private readonly string _appStoragePath =
@@ -35,10 +31,6 @@ namespace Voidstrap.UI.ViewModels.Settings
 
             LoadSettings();
 
-            OpenHistoryWindowCommand = new RelayCommand(OpenHistoryWindow);
-            MusicWindowCommand = new RelayCommand(MusicPlayerWindow);
-            ChatModeWindowCommand = new RelayCommand(ChatModeWindow);
-            RPCWindowCommand = new RelayCommand(RPCUIWindow);
             AccountWindowCommand = new RelayCommand(AccountWindow);
         }
 
@@ -120,30 +112,6 @@ namespace Voidstrap.UI.ViewModels.Settings
                 _jsonData.ToJsonString(new JsonSerializerOptions { WriteIndented = true }));
         }
 
-        private void OpenHistoryWindow()
-        {
-            var historyWindow = new ServerHistory(_watcher);
-            historyWindow.Show();
-        }
-
-        private void ChatModeWindow()
-        {
-            var historyWindow = new DiscordChatWindow();
-            historyWindow.Show();
-        }
-
-        private void MusicPlayerWindow()
-        {
-            var musicPlayerWindow = new MusicPlayer(_watcher);
-            musicPlayerWindow.Show();
-        }
-
-        private void RPCUIWindow()
-        {
-            var rpcUIWindow = new RPCWindow();
-            rpcUIWindow.Show();
-        }
-
         private void DeleteIntegration()
         {
             if (SelectedCustomIntegration is null)
@@ -190,13 +158,9 @@ namespace Voidstrap.UI.ViewModels.Settings
                 {
                     ShowServerDetailsEnabled = value;
                     DisableAppPatchEnabled = value;
-                    DiscordActivityEnabled = value;
-                    DiscordActivityJoinEnabled = value;
 
                     OnPropertyChanged(nameof(ShowServerDetailsEnabled));
                     OnPropertyChanged(nameof(DisableAppPatchEnabled));
-                    OnPropertyChanged(nameof(DiscordActivityEnabled));
-                    OnPropertyChanged(nameof(DiscordActivityJoinEnabled));
                 }
             }
         }
@@ -207,58 +171,16 @@ namespace Voidstrap.UI.ViewModels.Settings
             set => App.Settings.Prop.ShowServerDetails = value;
         }
 
-        public bool IngameChatDiscord
-        {
-            get => App.Settings.Prop.IngameChatDiscord;
-            set => App.Settings.Prop.IngameChatDiscord = value;
-        }
-
         public bool joinGameNotify
         {
             get => App.Settings.Prop.NotificationWindowShow;
             set => App.Settings.Prop.NotificationWindowShow = value;
         }
 
-        public bool exitondissy
-        {
-            get => App.Settings.Prop.exitondissy;
-            set => App.Settings.Prop.exitondissy = value;
-        }
-
-        public string gamename
-        {
-            get => App.Settings.Prop.CustomGameName;
-            set => App.Settings.Prop.CustomGameName = value;
-        }
-
-        public bool GameWIP
-        {
-            get => App.Settings.Prop.GameWIP;
-            set => App.Settings.Prop.GameWIP = value;
-        }
-
-        public bool FFlagAmountRPC
-        {
-            get => App.Settings.Prop.FFlagRPCDisplayer;
-            set => App.Settings.Prop.FFlagRPCDisplayer = value;
-        }
-
-        public bool ServerUptimeBetterBLOXcuzitsbetterXD
-        {
-            get => App.Settings.Prop.ServerUptimeBetterBLOXcuzitsbetterXD;
-            set => App.Settings.Prop.ServerUptimeBetterBLOXcuzitsbetterXD = value;
-        }
-
         private void AccountWindow()
         {
             var accountWindow = new AccountManagerWindow();
             accountWindow.Show();
-        }
-
-        public string gameimage
-        {
-            get => App.Settings.Prop.UseCustomIcon;
-            set => App.Settings.Prop.UseCustomIcon = value;
         }
 
         public bool PlayerLogsEnabled
@@ -271,71 +193,10 @@ namespace Voidstrap.UI.ViewModels.Settings
             }
         }
 
-        public bool DiscordActivityEnabled
-        {
-            get => App.Settings.Prop.UseDiscordRichPresence;
-            set
-            {
-                App.Settings.Prop.UseDiscordRichPresence = value;
-
-                if (!value)
-                {
-                    DiscordActivityJoinEnabled = value;
-                    DiscordAccountOnProfile = value;
-                    GameIconChecked = value;
-                    ServerLocationGame = value;
-                    OnPropertyChanged(nameof(DiscordActivityJoinEnabled));
-                    OnPropertyChanged(nameof(DiscordAccountOnProfile));
-                    OnPropertyChanged(nameof(GameIconChecked));
-                    OnPropertyChanged(nameof(ServerLocationGame));
-                }
-            }
-        }
-
         public bool UncapFPS
         {
             get => RobloxSettings.IsUncapped();
             set => RobloxSettings.SetUncapped(value);
-        }
-
-        public bool DiscordActivityJoinEnabled
-        {
-            get => !App.Settings.Prop.HideRPCButtons;
-            set => App.Settings.Prop.HideRPCButtons = !value;
-        }
-
-        public bool DiscordAccountOnProfile
-        {
-            get => App.Settings.Prop.ShowAccountOnRichPresence;
-            set => App.Settings.Prop.ShowAccountOnRichPresence = value;
-        }
-
-        public bool GameIconChecked
-        {
-            get => App.Settings.Prop.GameIconChecked;
-            set => App.Settings.Prop.GameIconChecked = value;
-        }
-        public bool GameNameChecked
-        {
-            get => App.Settings.Prop.GameNameChecked;
-            set => App.Settings.Prop.GameNameChecked = value;
-        }
-
-        public bool GameCreatorChecked
-        {
-            get => App.Settings.Prop.GameCreatorChecked;
-            set => App.Settings.Prop.GameCreatorChecked = value;
-        }
-        public bool GameStatusChecked
-        {
-            get => App.Settings.Prop.GameStatusChecked;
-            set => App.Settings.Prop.GameStatusChecked = value;
-        }
-
-        public bool ServerLocationGame
-        {
-            get => App.Settings.Prop.ServerLocationGame;
-            set => App.Settings.Prop.ServerLocationGame = value;
         }
 
         public bool DisableAppPatchEnabled

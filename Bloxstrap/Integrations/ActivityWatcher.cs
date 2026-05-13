@@ -6,7 +6,6 @@ using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Voidstrap.UI.Elements.Settings.Pages;
 using static Voidstrap.Models.Persistable.AppSettings;
 
 namespace Voidstrap.Integrations
@@ -34,6 +33,17 @@ namespace Voidstrap.Integrations
         private const string GamePlayerJoinLeavePattern = @"(added|removed): (.*) (.*[0-9])";
         private const string GameMessageLogPattern = @"Success Text: (.*)";
         private const int ENUM_CURRENT_SETTINGS = -1;
+
+        private sealed class ServerResponse
+        {
+            public List<Server> Data { get; set; } = new();
+        }
+
+        private sealed class Server
+        {
+            public string Id { get; set; } = string.Empty;
+            public int Playing { get; set; }
+        }
 
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         private static extern bool EnumDisplaySettings(
@@ -100,7 +110,6 @@ namespace Voidstrap.Integrations
         public string LogLocation = null!;
         public bool InGame = false;
         public ActivityData Data { get; private set; } = new();
-        public List<ActivityData> History = new();
         public Dictionary<int, ActivityData.UserLog> PlayerLogs => Data.PlayerLogs;
         public Dictionary<int, ActivityData.UserMessage> MessageLogs => Data.MessageLogs;
         public bool IsDisposed = false;
@@ -299,12 +308,6 @@ namespace Voidstrap.Integrations
                     Data.UniverseId = long.Parse(match.Groups[1].Value);
                     Data.UserId = long.Parse(match.Groups[2].Value);
 
-                    if (History.Any())
-                    {
-                        var lastActivity = History.First();
-                        if (Data.UniverseId == lastActivity.UniverseId && Data.IsTeleport)
-                            Data.RootActivity = lastActivity.RootActivity ?? lastActivity;
-                    }
                 }
                 else if (entry.Contains(GameJoiningUDMUXEntry))
                 {
@@ -336,11 +339,8 @@ namespace Voidstrap.Integrations
                     RestoreOriginalResolution();
 
                     Data.TimeLeft = DateTime.Now;
-                    History.Insert(0, Data);
-
                     InGame = false;
 
-                    var lastData = Data;
                     Data = new();
 
                     OnGameLeave?.Invoke(this, EventArgs.Empty);
