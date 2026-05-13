@@ -211,14 +211,14 @@
                        Stretch="Uniform"
                        Margin="0,0,0,12" />
 
-                <TextBlock Text="Voidstrap"
+                <TextBlock Text="NullCore"
                            FontSize="28"
                            FontWeight="SemiBold"
                            HorizontalAlignment="Center"
                            Foreground="White"
                            Opacity="0.95" />
 
-                <TextBlock Text="Bloxstrap Fork | Voidstrap Team"
+                <TextBlock Text="t1nkq &amp; DeniskaaaXD"
                            FontSize="14"
                            HorizontalAlignment="Center"
                            Foreground="White"

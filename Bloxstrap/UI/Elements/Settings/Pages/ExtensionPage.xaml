@@ -19,7 +19,7 @@
                 FontSize="14"
                 Margin="0,0,0,16"
                 Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                Text="Extensions for Voidstrap and its Community." />
+                Text="Extensions for NullCore and its community." />
             <ui:Card>
                 <StackPanel Orientation="Vertical">
                     <!-- Fleasion Option -->
@@ -57,7 +57,7 @@
 
                         <controls:OptionControl Grid.Column="1" HorizontalAlignment="Stretch"
                                                 Header="AniWatch"
-                                                Description="Allows you to watch Anime while using Voidstrap/Roblox."
+                                                Description="Allows you to watch Anime while using NullCore/Roblox."
                                                 HelpLink="https://github.com/T1nkq/NullCore#readme#aniwatch">
                             <StackPanel>
                                 <ui:ToggleSwitch IsChecked="{Binding aniwatchenabler, Mode=TwoWay}" />

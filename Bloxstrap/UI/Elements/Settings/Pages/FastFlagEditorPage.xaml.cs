@@ -684,7 +684,7 @@ namespace Voidstrap.UI.Elements.Settings.Pages
             {
                 Filter = "JSON files (*.json)|*.json|Text files (*.txt)|*.txt",
                 Title = "Save JSON or TXT File",
-                FileName = "VoidstrapExport.json"
+                FileName = "NullCoreExport.json"
             };
 
             if (saveFileDialog.ShowDialog() == true)

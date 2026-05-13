@@ -27,7 +27,7 @@ namespace Voidstrap.UI
             _notifyIcon = new NotifyIcon(new System.ComponentModel.Container())
             {
                 Icon = Properties.Resources.IconVoidstrap,
-                Text = "Voidstrap",
+                Text = App.ProjectName,
                 Visible = true
             };
 

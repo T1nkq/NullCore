@@ -19,6 +19,19 @@
             FontSize="24"
             FontWeight="Medium"
             Text="{x:Static resources:Strings.Menu_About_Licenses}" />
+        <ui:CardAction
+            Margin="0,0,0,8"
+            Command="models:GlobalViewModel.OpenWebpageCommand"
+            CommandParameter="https://github.com/T1nkq/NullCore/blob/main/LICENSE">
+            <StackPanel>
+                <TextBlock FontSize="15" Text="NullCore" />
+                <TextBlock
+                    Margin="0,2,0,0"
+                    FontSize="12"
+                    Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                    Text="{x:Static resources:Strings.Menu_About_Licenses_MIT}" />
+            </StackPanel>
+        </ui:CardAction>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
@@ -38,7 +51,7 @@
                 Command="models:GlobalViewModel.OpenWebpageCommand"
                 CommandParameter="https://github.com/T1nkq/NullCore/blob/main/LICENSE.VOIDSTRAP">
                 <StackPanel>
-                    <TextBlock FontSize="14" Text="Voidstrap upstream" />
+                    <TextBlock FontSize="14" Text="Upstream license" />
                     <TextBlock
                         Margin="0,2,0,0"
                         FontSize="12"

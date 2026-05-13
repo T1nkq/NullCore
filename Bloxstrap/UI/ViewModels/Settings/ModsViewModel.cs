@@ -608,7 +608,7 @@ namespace Voidstrap.UI.ViewModels.Settings
         private string _imageUrl;
 
         private readonly string _dir =
-            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Voidstrap");
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), App.ProjectName);
         private readonly string _file;
 
         public ModsViewModel()

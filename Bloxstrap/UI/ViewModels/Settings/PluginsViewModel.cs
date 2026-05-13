@@ -132,7 +132,7 @@ namespace Voidstrap.UI.ViewModels.Settings
         #region AutoSave Path
         private readonly string AutoSavePath = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-            "Voidstrap",
+            Voidstrap.App.ProjectName,
             "autosave_plugin.zip"
         );
         #endregion
@@ -225,7 +225,7 @@ namespace Voidstrap.UI.ViewModels.Settings
 
         private readonly string PluginSessionPath = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-            "Voidstrap",
+            Voidstrap.App.ProjectName,
             "plugin_session.json"
         );
 

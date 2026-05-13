@@ -32,6 +32,7 @@ dotnet publish .\Bloxstrap\NullCore.csproj -c Release -r win-x64 --self-containe
 
 NullCore is based on Voidstrap/Bloxstrap-family code and keeps the upstream license files in the repository:
 
+- `LICENSE`
 - `LICENSE.VOIDSTRAP`
 - `LICENSE.BLOXSTRAP`
 - `LICENSE.FISHSTRAP`

@@ -110,7 +110,7 @@
                     x:Name="RootFrame"
                     Grid.Row="1"
                     Margin="0,2,8,0"
-                    Content="This installation process will be quick and simple, and you will be able to configure any of Voidstrap's settings after installation."
+                    Content="This installation process will be quick and simple, and you will be able to configure any of NullCore's settings after installation."
                     Navigated="RootFrame_Navigated" />
             </Grid>
         </Grid>

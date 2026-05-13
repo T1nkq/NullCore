@@ -24,7 +24,7 @@
                     MarkdownText="My projects are not about money, so I will never force you to pay. I have never received money from any of my projects!"
                     Margin="0,0,0,6"/>
                 <controls:MarkdownTextBlock
-                    MarkdownText="This page exists so you can support me through Voidstrap giveaways in the Discord server or in general."
+                    MarkdownText="This page exists so you can support NullCore giveaways in the Discord server or in general."
                     Margin="0,0,0,6"/>
                 <controls:MarkdownTextBlock
                     MarkdownText="All donations are voluntary and highly appreciated ❤️"/>

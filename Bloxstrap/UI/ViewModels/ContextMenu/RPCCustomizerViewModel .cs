@@ -26,7 +26,7 @@ namespace Voidstrap.UI.ViewModels.ContextMenu
 
         private readonly string _configPath =
             Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                         "Voidstrap", "discord-rpc.json");
+                         App.ProjectName, "discord-rpc.json");
 
         private CancellationTokenSource _saveCts;
         private CancellationTokenSource _presenceCts;
@@ -35,7 +35,7 @@ namespace Voidstrap.UI.ViewModels.ContextMenu
         private readonly Dispatcher _dispatcher = Application.Current?.Dispatcher ?? Dispatcher.CurrentDispatcher;
 
         private string _applicationId;
-        private string _appName = "Voidstrap";
+        private string _appName = App.ProjectName;
         private string _details = "";
         private string _state = "";
         private string _largeImageKey = "large";
@@ -310,14 +310,14 @@ namespace Voidstrap.UI.ViewModels.ContextMenu
             {
                 var presence = new DiscordRichPresence
                 {
-                    Details = string.IsNullOrWhiteSpace(Details) ? "Using Voidstrap" : Details,
+                    Details = string.IsNullOrWhiteSpace(Details) ? $"Using {App.ProjectName}" : Details,
                     State = State,
                     Assets = new Assets
                     {
                         LargeImageKey = string.IsNullOrWhiteSpace(LargeImageKey) ? null : LargeImageKey,
                         LargeImageText = AppName,
                         SmallImageKey = string.IsNullOrWhiteSpace(SmallImageKey) ? null : SmallImageKey,
-                        SmallImageText = "Voidstrap RPC"
+                        SmallImageText = $"{App.ProjectName} RPC"
                     }
                 };
 

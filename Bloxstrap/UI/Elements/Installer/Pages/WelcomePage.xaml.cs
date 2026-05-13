@@ -35,9 +35,5 @@ namespace Voidstrap.UI.Elements.Installer.Pages
         {
             Process.Start(new ProcessStartInfo("https://github.com/T1nkq/NullCore") { UseShellExecute = true });
         }
-        private void ContributorsButton_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            Process.Start(new ProcessStartInfo("https://github.com/T1nkq/NullCore/graphs/contributors") { UseShellExecute = true });
-        }
     }
 }

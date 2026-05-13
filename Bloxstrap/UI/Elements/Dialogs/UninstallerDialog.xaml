@@ -10,7 +10,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:resources="clr-namespace:Voidstrap.Resources"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-    Title="Voidstrap"
+    Title="NullCore"
     Width="480"
     MinWidth="0"
     MinHeight="0"
@@ -37,7 +37,7 @@
         </Grid.RowDefinitions>
 
         <ui:TitleBar
-            Title="Voidstrap"
+            Title="NullCore"
             Grid.Row="0"
             Grid.ColumnSpan="2"
             Padding="8"

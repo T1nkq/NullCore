@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Bootstrapper.AutoUpdateFailed" xml:space="preserve">
-    <value>Voidstrap was unable to automatically update to version {0}. Please update it manually by downloading and running it from the website.</value>
+    <value>NullCore was unable to automatically update to version {0}. Please update it manually by downloading and running it from the website.</value>
   </data>
   <data name="Bootstrapper.ConfirmLaunch" xml:space="preserve">
     <value>Roblox is currently running, and launching another instance will close it. Are you sure you want to continue launching?</value>
@@ -127,16 +127,16 @@
     <value>Roblox may be down right now. See {0} for more information.</value>
   </data>
   <data name="Dialog.Connectivity.BadConnection" xml:space="preserve">
-    <value>A connection could not be made, which likely indicates a poor internet connection or a firewall block. If your connection is fine, please ensure that your antivirus isn't blocking Voidstrap.</value>
+    <value>A connection could not be made, which likely indicates a poor internet connection or a firewall block. If your connection is fine, please ensure that your antivirus isn't blocking NullCore.</value>
   </data>
   <data name="Bootstrapper.FirstRunUninstall" xml:space="preserve">
-    <value>You must first install Voidstrap before uninstalling.</value>
+    <value>You must first install NullCore before uninstalling.</value>
   </data>
   <data name="Bootstrapper.NotEnoughSpace" xml:space="preserve">
-    <value>Voidstrap does not have enough disk space to download and install Roblox. Please free up some disk space and try again.</value>
+    <value>NullCore does not have enough disk space to download and install Roblox. Please free up some disk space and try again.</value>
   </data>
   <data name="Bootstrapper.Status.ApplyingModifications" xml:space="preserve">
-    <value>Applying Voidstrap modifications...</value>
+    <value>Applying NullCore modifications...</value>
   </data>
   <data name="Bootstrapper.Status.Configuring" xml:space="preserve">
     <value>Configuring {product}...</value>
@@ -158,7 +158,7 @@
     <value>Upgrading {product}...</value>
   </data>
   <data name="Bootstrapper.Status.UpgradingVoidstrap" xml:space="preserve">
-    <value>Getting the latest Voidstrap...</value>
+    <value>Getting the latest NullCore...</value>
   </data>
   <data name="Bootstrapper.Status.WaitingOtherInstances" xml:space="preserve">
     <value>Waiting for other instances...</value>
@@ -341,10 +341,10 @@
     <comment>Text for style previews that use text button that says "Cancel"</comment>
   </data>
   <data name="Bootstrapper.SuccessfullyUninstalled" xml:space="preserve">
-    <value>Voidstrap has successfully uninstalled</value>
+    <value>NullCore has successfully uninstalled</value>
   </data>
   <data name="Bootstrapper.Uninstall.RobloxRunning" xml:space="preserve">
-    <value>Roblox is currently running, but must be closed before uninstalling Voidstrap. Would you like to close Roblox now?</value>
+    <value>Roblox is currently running, but must be closed before uninstalling NullCore. Would you like to close Roblox now?</value>
   </data>
   <data name="Bootstrapper.WMFNotFound" xml:space="preserve">
     <value>Roblox requires the use of Windows Media Foundation components. You appear to be missing them, likely because you are using an N edition of Windows. Please install them first, and then launch Roblox.</value>
@@ -448,22 +448,22 @@ Click for more information</value>
     <value>Connectivity error</value>
   </data>
   <data name="Dialog.Connectivity.UnableToConnect" xml:space="preserve">
-    <value>Voidstrap is unable to connect to {0}</value>
+    <value>NullCore is unable to connect to {0}</value>
     <comment>{0} is the name of a service (i.e. Roblox, GitHub)</comment>
   </data>
   <data name="Dialog.Exception.CopyLogContents" xml:space="preserve">
     <value>Copy log contents</value>
   </data>
   <data name="Dialog.Exception.Info.1" xml:space="preserve">
-    <value>An exception occurred while running Voidstrap/Voidstrap</value>
+    <value>An exception occurred while running NullCore/NullCore</value>
   </data>
   <data name="Dialog.Exception.Info.2" xml:space="preserve">
-    <value>Check the [Voidstrap Wiki]({0}) first to see if this problem has already been addressed with a fix.
+    <value>Check the [NullCore Wiki]({0}) first to see if this problem has already been addressed with a fix.
 
 If not, then please report this exception through a [GitHub issue]({1}) along with a copy of the log file that was created.</value>
   </data>
   <data name="Dialog.Exception.Title" xml:space="preserve">
-    <value>Voidstrap Exception</value>
+    <value>NullCore Exception</value>
   </data>
   <data name="Common.Custom" xml:space="preserve">
     <value>Custom</value>
@@ -478,10 +478,10 @@ If not, then please report this exception through a [GitHub issue]({1}) along wi
     <value>Fake Byfron (2023)</value>
   </data>
   <data name="Enums.BootstrapperStyle.ClassicFluentDialog" xml:space="preserve">
-    <value>Voidstrap (Classic)</value>
+    <value>NullCore (Classic)</value>
   </data>
   <data name="Enums.BootstrapperStyle.FluentAeroDialog" xml:space="preserve">
-    <value>Voidstrap (Glass)</value>
+    <value>NullCore (Glass)</value>
   </data>
   <data name="Enums.BootstrapperStyle.LegacyDialog2008" xml:space="preserve">
     <value>Legacy (2008 - 2011)</value>
@@ -601,13 +601,13 @@ If not, then please report this exception through a [GitHub issue]({1}) along wi
     <value>Blue</value>
   </data>
   <data name="Enums.Theme.Voidstrap" xml:space="preserve">
-    <value>Voidstrap</value>
+    <value>NullCore</value>
   </data>
   <data name="InstallChecker.Updated" xml:space="preserve">
-    <value>Voidstrap has been upgraded to a new version</value>
+    <value>NullCore has been upgraded to a new version</value>
   </data>
   <data name="InstallChecker.VersionDifferentThanInstalled" xml:space="preserve">
-    <value>The version of Voidstrap you've launched is different to the version you currently have installed.
+    <value>The version of NullCore you've launched is different to the version you currently have installed.
 Would you like to upgrade your currently installed version?</value>
   </data>
   <data name="Menu.About.Contributors" xml:space="preserve">
@@ -617,7 +617,7 @@ Would you like to upgrade your currently installed version?</value>
     <value>Code</value>
   </data>
   <data name="Menu.About.Contributors.Description" xml:space="preserve">
-    <value>These are the people who have made notable contributions to Voidstrap/Voidstrap, helping make it what it is.</value>
+    <value>These are the people who have made notable contributions to NullCore/NullCore, helping make it what it is.</value>
   </data>
   <data name="Menu.About.Contributors.FeatureIdeas" xml:space="preserve">
     <value>Feature Ideas</value>
@@ -663,7 +663,7 @@ Would you like to upgrade your currently installed version?</value>
     <value>Please note that not all your changes will immediately apply until you close all currently open Roblox instances.</value>
   </data>
   <data name="Menu.AlreadyRunning.Title" xml:space="preserve">
-    <value>Voidstrap is already running</value>
+    <value>NullCore is already running</value>
   </data>
   <data name="Menu.Appearance.Bootstrapper.Description" xml:space="preserve">
     <value>You can make it look different, retro, or even just like Roblox.</value>
@@ -690,7 +690,7 @@ Would you like to upgrade your currently installed version?</value>
     <value>Title</value>
   </data>
   <data name="Menu.Appearance.Description" xml:space="preserve">
-    <value>Configure how Voidstrap should look.</value>
+    <value>Configure how NullCore should look.</value>
   </data>
   <data name="Menu.Appearance.Global.Theme.Title" xml:space="preserve">
     <value>Global Theme</value>
@@ -714,10 +714,10 @@ Would you like to upgrade your currently installed version?</value>
     <value>Appearance</value>
   </data>
   <data name="Menu.Behaviour.AutoUpdate.Description" xml:space="preserve">
-    <value>Voidstrap will automatically check and update itself when launching Roblox.</value>
+    <value>NullCore will automatically check and update itself when launching Roblox.</value>
   </data>
   <data name="Menu.Behaviour.AutoUpdate.Title" xml:space="preserve">
-    <value>Automatically update Voidstrap</value>
+    <value>Automatically update NullCore</value>
   </data>
   <data name="Menu.Behaviour.ConfirmLaunches.Description" xml:space="preserve">
     <value>Prevent against closures of your existing game from accidentally launching another one.</value>
@@ -726,7 +726,7 @@ Would you like to upgrade your currently installed version?</value>
     <value>Prompt to confirm when launching another Roblox instance</value>
   </data>
   <data name="Menu.Behaviour.Description" xml:space="preserve">
-    <value>Configure what Voidstrap should do when launching Roblox.</value>
+    <value>Configure what NullCore should do when launching Roblox.</value>
   </data>
   <data name="Menu.Behaviour.ForceRobloxReinstall.Description" xml:space="preserve">
     <value>Roblox will be installed fresh on next launch.</value>
@@ -867,10 +867,10 @@ Do NOT use this to import large "flag lists" made by other people that promise t
     <value>Icon files</value>
   </data>
   <data name="Menu.InstallLocation.CantInstall" xml:space="preserve">
-    <value>Voidstrap cannot be installed here. Please choose a different location, or resort to using the default location by clicking the reset button.</value>
+    <value>NullCore cannot be installed here. Please choose a different location, or resort to using the default location by clicking the reset button.</value>
   </data>
   <data name="Menu.InstallLocation.NotEmpty" xml:space="preserve">
-    <value>The folder you've chosen to install Voidstrap to already exists and is NOT empty. It is strongly recommended for Voidstrap to be installed to its own independent folder.
+    <value>The folder you've chosen to install NullCore to already exists and is NOT empty. It is strongly recommended for NullCore to be installed to its own independent folder.
 
 Changing to the following location is suggested:
 {0}
@@ -883,7 +883,7 @@ Selecting 'No' will ignore this warning and continue installation.</value>
     <value>You must set an install location</value>
   </data>
   <data name="Menu.InstallLocation.NoWritePerms" xml:space="preserve">
-    <value>Voidstrap does not have write access to the install location you've selected. Please choose another location.</value>
+    <value>NullCore does not have write access to the install location you've selected. Please choose another location.</value>
   </data>
   <data name="Menu.Integrations.ActivityTracking" xml:space="preserve">
     <value>Activity tracking</value>
@@ -934,7 +934,7 @@ Selecting 'No' will ignore this warning and continue installation.</value>
     <value>Don't exit to desktop app</value>
   </data>
   <data name="Menu.Integrations.EnableActivityTracking.Description" xml:space="preserve">
-    <value>Allows for Voidstrap to detect what Roblox game you're playing. Certain features may require this.</value>
+    <value>Allows for NullCore to detect what Roblox game you're playing. Certain features may require this.</value>
   </data>
   <data name="Menu.Integrations.EnableActivityTracking.Title" xml:space="preserve">
     <value>Enable activity tracking</value>
@@ -1028,10 +1028,10 @@ Selecting 'No' will ignore this warning and continue installation.</value>
     <value>Changes will take effect the next time you launch Roblox.</value>
   </data>
   <data name="Menu.SettingsSaved.Title" xml:space="preserve">
-    <value>Voidstrap Settings Saved!</value>
+    <value>NullCore Settings Saved!</value>
   </data>
   <data name="Menu.Title" xml:space="preserve">
-    <value>Voidstrap Settings</value>
+    <value>NullCore Settings</value>
   </data>
   <data name="Dialog.LanguageSelector.Header" xml:space="preserve">
     <value>Choose preferred language</value>
@@ -1062,7 +1062,7 @@ Some text might not be translated to preferred language.</value>
     <value>User Interface and Layout</value>
   </data>
   <data name="Menu.FastFlags.ManagerEnabled.Title" xml:space="preserve">
-    <value>Allow Voidstrap to manage Fast Flags</value>
+    <value>Allow NullCore to manage Fast Flags</value>
   </data>
   <data name="Menu.FastFlags.ManagerEnabled.Description" xml:space="preserve">
     <value>Disabling this will prevent anything configured here from being applied to Roblox.</value>
@@ -1110,7 +1110,7 @@ Some text might not be translated to preferred language.</value>
     <value>Disable grass motion</value>
   </data>
   <data name="Dialog.Connectivity.UnableToDownload" xml:space="preserve">
-    <value>Voidstrap is unable to download Roblox</value>
+    <value>NullCore is unable to download Roblox</value>
   </data>
   <data name="Dialog.Connectivity.UnableToDownloadReason" xml:space="preserve">
     <value>Roblox cannot be downloaded at this time. Please read the following help page for more information: {0}</value>
@@ -1131,7 +1131,7 @@ Some text might not be translated to preferred language.</value>
     <value>The entry for '{0}' is not valid as the value must be a number</value>
   </data>
   <data name="Logger.NoWriteMode" xml:space="preserve">
-    <value>No log file will be written for this launch because Voidstrap is unable to write to the folder at '{0}'</value>
+    <value>No log file will be written for this launch because NullCore is unable to write to the folder at '{0}'</value>
   </data>
   <data name="Common.Default" xml:space="preserve">
     <value>Default</value>
@@ -1146,7 +1146,7 @@ Some text might not be translated to preferred language.</value>
     <value>The entry for '{0}' is not valid as the place filter is not formatted correctly.</value>
   </data>
   <data name="Installer.Title" xml:space="preserve">
-    <value>Voidstrap Installer</value>
+    <value>NullCore Installer</value>
   </data>
   <data name="Installer.Welcome.Title" xml:space="preserve">
     <value>Welcome</value>
@@ -1165,16 +1165,16 @@ Some text might not be translated to preferred language.</value>
     <value>Next</value>
   </data>
   <data name="Installer.Welcome.MainText" xml:space="preserve">
-    <value>Thank you for downloading Voidstrap.
+    <value>Thank you for downloading NullCore.
 
-This installation process will be quick and simple, and you will be able to configure any of Voidstrap's settings after installation.</value>
+This installation process will be quick and simple, and you will be able to configure any of NullCore's settings after installation.</value>
     <comment>{0} and {1} are URLs</comment>
   </data>
   <data name="Installer.Welcome.NextToContinue" xml:space="preserve">
     <value>Please click 'Next' to continue.</value>
   </data>
   <data name="Installer.Welcome.UpdateNotice" xml:space="preserve">
-    <value>You are trying to install version {0} of Voidstrap, but the latest version available is {1}. Would you like to download it?</value>
+    <value>You are trying to install version {0} of NullCore, but the latest version available is {1}. Would you like to download it?</value>
   </data>
   <data name="Installer.Install.Location.Title" xml:space="preserve">
     <value>Choose where to install to</value>
@@ -1195,16 +1195,16 @@ This installation process will be quick and simple, and you will be able to conf
     <value>Start Menu icon</value>
   </data>
   <data name="Installer.Completion.Text" xml:space="preserve">
-    <value>Voidstrap has been installed!    
+    <value>NullCore has been installed!    
 
-Roblox will install when you launch it with Voidstrap for the first time. Before that, you may want to adjust Voidstrap’s settings.  
+Roblox will install when you launch it with NullCore for the first time. Before that, you may want to adjust NullCore’s settings.  
 
-Don’t use the "Roblox Player" shortcut Voidstrap won’t run with it. If Voidstrap doesn’t appear when launching from the website, open Roblox with Voidstrap once from the desktop to fix it.  
+Don’t use the "Roblox Player" shortcut NullCore won’t run with it. If NullCore doesn’t appear when launching from the website, open Roblox with NullCore once from the desktop to fix it.  
 
 What would you like to do?</value>
   </data>
   <data name="Installer.Completion.Settings.Title" xml:space="preserve">
-    <value>Configure Voidstrap's settings</value>
+    <value>Configure NullCore's settings</value>
   </data>
   <data name="Installer.Completion.Settings.Description" xml:space="preserve">
     <value>Tweak with all the features it has to offer</value>
@@ -1216,10 +1216,10 @@ What would you like to do?</value>
     <value>Will drop you into the desktop app once everything's done</value>
   </data>
   <data name="Uninstaller.Title" xml:space="preserve">
-    <value>Uninstall Voidstrap</value>
+    <value>Uninstall NullCore</value>
   </data>
   <data name="Uninstaller.Text" xml:space="preserve">
-    <value>Uninstalling Voidstrap will remove it from your system and restore the default Roblox launcher if it’s still installed.  
+    <value>Uninstalling NullCore will remove it from your system and restore the default Roblox launcher if it’s still installed.  
 
 However, the uninstallation process may not remove all leftover files, so you may need to clean them up manually from the installation directory.
 </value>
@@ -1228,7 +1228,7 @@ However, the uninstallation process may not remove all leftover files, so you ma
     <value>Keep my settings and mods</value>
   </data>
   <data name="Uninstaller.KeepData.Description" xml:space="preserve">
-    <value>They'll be kept where Voidstrap was installed, and will automatically be restored on a reinstall.</value>
+    <value>They'll be kept where NullCore was installed, and will automatically be restored on a reinstall.</value>
   </data>
   <data name="Uninstaller.Uninstall" xml:space="preserve">
     <value>Uninstall</value>
@@ -1249,19 +1249,19 @@ However, the uninstallation process may not remove all leftover files, so you ma
     <value>You currently do not have the WebView2 runtime installed. Some Roblox features will not work properly without it, such as the desktop app. Would you like to download it now?</value>
   </data>
   <data name="Dialog.CannotCreateShortcuts" xml:space="preserve">
-    <value>Voidstrap was unable to create shortcuts for the Desktop and Start menu. Try creating them later through the settings.</value>
+    <value>NullCore was unable to create shortcuts for the Desktop and Start menu. Try creating them later through the settings.</value>
   </data>
   <data name="Dialog.Exception.Info.2.Alt" xml:space="preserve">
-    <value>Check the [Voidstrap Wiki]({0}) first to see if this problem has already been addressed with a fix.
+    <value>Check the [NullCore Wiki]({0}) first to see if this problem has already been addressed with a fix.
 
-If not, then please report this exception to the maintainers of this fork. Do NOT report this to Voidstrap's GitHub issues, as this is an unoffical build.</value>
+If not, then please report this exception to the maintainers of this fork. Do NOT report this to NullCore's GitHub issues, as this is an unoffical build.</value>
     <comment>"fork" in general means "a variation of" or "a different version of". You can alternatively write the first sentence as "...to the maintainers of this version."</comment>
   </data>
   <data name="Installer.Install.Shortcuts.Description" xml:space="preserve">
     <value>These are general shortcuts that bring up a multi-choice launch menu. Shortcuts for specific functions can be created later in the settings.</value>
   </data>
   <data name="Menu.Shortcuts.Description" xml:space="preserve">
-    <value>Configure how Voidstrap can be readily launched.</value>
+    <value>Configure how NullCore can be readily launched.</value>
   </data>
   <data name="Menu.Shortcuts.General.Title" xml:space="preserve">
     <value>General</value>
@@ -1291,7 +1291,7 @@ If not, then please report this exception to the maintainers of this fork. Do NO
     <value>Please wait for uninstallation to finish.</value>
   </data>
   <data name="About.Title" xml:space="preserve">
-    <value>About Voidstrap</value>
+    <value>About NullCore</value>
   </data>
   <data name="About.Licenses.Title" xml:space="preserve">
     <value>Licenses</value>
@@ -1304,7 +1304,7 @@ If not, then please report this exception to the maintainers of this fork. Do NO
     <value>You have unsaved changes. Are you sure you want to close without saving?</value>
   </data>
   <data name="InstallChecker.VersionLessThanInstalled" xml:space="preserve">
-    <value>The version of Voidstrap you've launched is older than the version you currently have installed.
+    <value>The version of NullCore you've launched is older than the version you currently have installed.
 Issues may occur and your settings may be altered. A reinstall is recommended.
 Are you sure you want to continue?</value>
   </data>
@@ -1317,7 +1317,7 @@ Are you sure you want to continue?</value>
   <data name="Dialog.PlayerError.HelpInformation" xml:space="preserve">
     <value>For information about why this could be happening and how this can be resolved, please read [this help article]({0}).
 
-Check if Roblox works with [the original launcher]({1}). If it doesn't, then this isn't a Voidstrap issue. If it does, then refer to the help article.</value>
+Check if Roblox works with [the original launcher]({1}). If it doesn't, then this isn't a NullCore issue. If it does, then refer to the help article.</value>
   </data>
   <data name="Common.NetworkError" xml:space="preserve">
     <value>Could not load data because of a network error.</value>
@@ -1326,10 +1326,10 @@ Check if Roblox works with [the original launcher]({1}). If it doesn't, then thi
     <value>Loading, please wait...</value>
   </data>
   <data name="About.Supporters.Title" xml:space="preserve">
-    <value>Voidstrap supporters</value>
+    <value>NullCore supporters</value>
   </data>
   <data name="About.Supporters.Description" xml:space="preserve">
-    <value>These are the people who've supported Voidstrap through Ko-fi. A massive thank you to everyone here!
+    <value>These are the people who've supported NullCore through Ko-fi. A massive thank you to everyone here!
 Every person here is ranked by their overall pledge.</value>
   </data>
   <data name="JsonManager.SettingsLoadFailed" xml:space="preserve">
@@ -1360,10 +1360,10 @@ Every person here is ranked by their overall pledge.</value>
     <value>For this launch, Roblox will not be checked for upgrades, and changes to mods will not be applied.</value>
   </data>
   <data name="Dialog.Connectivity.RobloxUpgradeNeeded" xml:space="preserve">
-    <value>Because Roblox needs to be installed or upgraded, Voidstrap cannot continue.</value>
+    <value>Because Roblox needs to be installed or upgraded, NullCore cannot continue.</value>
   </data>
   <data name="Installer.Install.CannotOverwrite" xml:space="preserve">
-    <value>Voidstrap has been installed to this location before and is still present, however the installer cannot overwrite the old executable. 
+    <value>NullCore has been installed to this location before and is still present, however the installer cannot overwrite the old executable. 
 
 Please manually delete NullCore.exe from the install location or try restarting your system, and then retry installation afterwards.</value>
   </data>
@@ -1377,7 +1377,7 @@ Please manually delete NullCore.exe from the install location or try restarting 
     <value>Configure application parameters such as DPI scaling behaviour and [fullscreen optimizations]({0}).</value>
   </data>
   <data name="Common.RobloxNotInstalled" xml:space="preserve">
-    <value>Roblox has not yet been installed. Please launch Roblox using Voidstrap at least once before trying to use this option.</value>
+    <value>Roblox has not yet been installed. Please launch Roblox using NullCore at least once before trying to use this option.</value>
   </data>
   <data name="Installer.ShouldCancel" xml:space="preserve">
     <value>Are you sure you want to cancel the installation?</value>
@@ -1395,10 +1395,10 @@ Please manually delete NullCore.exe from the install location or try restarting 
     <value>Extract Roblox icons to folder</value>
   </data>
   <data name="Menu.Shortcuts.ExtractIcons.Description" xml:space="preserve">
-    <value>Allows you to use Voidstrap's range of Roblox icons for your shortcuts. [See how.]({0})</value>
+    <value>Allows you to use NullCore's range of Roblox icons for your shortcuts. [See how.]({0})</value>
   </data>
   <data name="Dialog.RegistryWriteError" xml:space="preserve">
-    <value>Voidstrap is unable to write to the Windows Registry. An antivirus is likely interfering and causing issues. Please check to make sure there isn't anything that would restrict Voidstrap's operation.</value>
+    <value>NullCore is unable to write to the Windows Registry. An antivirus is likely interfering and causing issues. Please check to make sure there isn't anything that would restrict NullCore's operation.</value>
   </data>
   <data name="About.Supporters.Monthly" xml:space="preserve">
     <value>Monthly</value>
@@ -1407,13 +1407,13 @@ Please manually delete NullCore.exe from the install location or try restarting 
     <value>One-off</value>
   </data>
   <data name="Menu.Voidstrap.Description" xml:space="preserve">
-    <value>Configure options related to Voidstrap's behaviour itself.</value>
+    <value>Configure options related to NullCore's behaviour itself.</value>
   </data>
   <data name="Menu.Voidstrap.Analytics.Title" xml:space="preserve">
-    <value>Enable sending of analytics to Voidstrap</value>
+    <value>Enable sending of analytics to NullCore</value>
   </data>
   <data name="Menu.Voidstrap.Analytics.Description" xml:space="preserve">
-    <value>It's anonymous and nothing evil, promise. For insight on what Voidstrap collects and why, see Voidstrap's [privacy policy]({0}).</value>
+    <value>It's anonymous and nothing evil, promise. For insight on what NullCore collects and why, see NullCore's [privacy policy]({0}).</value>
   </data>
   <data name="Common.Analytics" xml:space="preserve">
     <value>Analytics</value>
@@ -1436,7 +1436,7 @@ While enabled, it will automatically launch Roblox after closing Settings, and r
 Would you like to enable test mode?</value>
   </data>
   <data name="About.Translators.Description" xml:space="preserve">
-    <value>All of Voidstrap's translations are crowdsourced through [Crowdin]({0}). Everyone listed here are people who generously volunteered their time and effort to help localise Voidstrap. A massive thank you to everyone here!</value>
+    <value>All of NullCore's translations are crowdsourced through [Crowdin]({0}). Everyone listed here are people who generously volunteered their time and effort to help localise NullCore. A massive thank you to everyone here!</value>
   </data>
   <data name="Common.Navigation.Install" xml:space="preserve">
     <value>Install</value>
@@ -1497,7 +1497,7 @@ This feature is essential for shaders to function properly.</value>
     <value>Custom</value>
   </data>
   <data name="Bootstrapper.FilesInUse" xml:space="preserve">
-    <value>Voidstrap tried to upgrade Roblox but can't because Roblox's files are still in use.
+    <value>NullCore tried to upgrade Roblox but can't because Roblox's files are still in use.
 
 Please close any applications that may be using Roblox's files, and relaunch.</value>
     <comment>This is *not* for when Roblox is still running when trying to upgrade. This applies to files being open (i.e. image assets)</comment>
@@ -1508,7 +1508,7 @@ Please close any applications that may be using Roblox's files, and relaunch.</v
   </data>
   <data name="Common.Export" xml:space="preserve">
     <value>Export</value>
-    <comment>Currently used under the "Voidstrap" settings tab for the button to export diagnostic data</comment>
+    <comment>Currently used under the "NullCore" settings tab for the button to export diagnostic data</comment>
   </data>
   <data name="Menu.Voidstrap.ExportData.Title" xml:space="preserve">
     <value>Export diagnostic data</value>
@@ -1517,11 +1517,11 @@ Please close any applications that may be using Roblox's files, and relaunch.</v
     <value>Gather information that can be uploaded online to troubleshoot a problem you're having.</value>
   </data>
   <data name="Menu.Voidstrap.ExportData.ExportConfig" xml:space="preserve">
-    <value>Voidstrap configuration</value>
+    <value>NullCore configuration</value>
     <comment>Label that appears next to a checkbox</comment>
   </data>
   <data name="Menu.Voidstrap.ExportData.ExportLogs" xml:space="preserve">
-    <value>All Voidstrap logs</value>
+    <value>All NullCore logs</value>
     <comment>Label that appears next to a checkbox</comment>
   </data>
   <data name="Dialog.Connectivity.Preventing" xml:space="preserve">
@@ -1531,7 +1531,7 @@ Please close any applications that may be using Roblox's files, and relaunch.</v
     <value />
   </data>
   <data name="Menu.Channel.Description" xml:space="preserve">
-    <value>Change deployment and installation settings for Roblox &amp; Voidstrap.</value>
+    <value>Change deployment and installation settings for Roblox &amp; NullCore.</value>
   </data>
   <data name="Common.Channel" xml:space="preserve">
     <value>Channel</value>
@@ -1622,7 +1622,7 @@ Would you like to switch to the default channel ({1})?</value>
     <value>Automatic channel change action</value>
   </data>
   <data name="Menu.Channel.ChangeAction.Description" xml:space="preserve">
-    <value>Roblox or Voidstrap may try to change your preferred channel.</value>
+    <value>Roblox or NullCore may try to change your preferred channel.</value>
   </data>
   <data name="Menu.Channel.ChangeAction.Automatic" xml:space="preserve">
     <value>Change automatically</value>
@@ -1721,7 +1721,7 @@ Would you like to switch your preferred channel to {0}?</value>
     <value>Version hash</value>
   </data>
   <data name="Menu.Channel.VersionHash.Desription" xml:space="preserve">
-    <value>Force Voidstrap to download version from specific hash. Please do not change if you have no idea what this does.</value>
+    <value>Force NullCore to download version from specific hash. Please do not change if you have no idea what this does.</value>
   </data>
   <data name="Menu.SaveAndLaunch" xml:space="preserve">
     <value>Save and Launch</value>
@@ -1768,7 +1768,7 @@ Would you like to switch your preferred channel to {0}?</value>
     <value>Bloxshade support is required for shaders.</value>
   </data>
   <data name="Dialog.Bloxshade.ThankYou" xml:space="preserve">
-    <value>Thank you for using Bloxshade with Voidstrap</value>
+    <value>Thank you for using Bloxshade with NullCore</value>
   </data>
   <data name="Dialog.Bloxshade.Setting" xml:space="preserve">
     <value>Bloxshade support has been enabled</value>

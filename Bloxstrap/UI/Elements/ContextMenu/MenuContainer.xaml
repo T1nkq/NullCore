@@ -46,7 +46,7 @@
                             Margin="6,0,0,0"
                             VerticalAlignment="Center"
                             Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                            Text="Voidstrap v2.4.1"/>
+                            Text="NullCore"/>
                     </Grid>
                 </MenuItem.Header>
             </MenuItem>

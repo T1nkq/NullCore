@@ -79,24 +79,6 @@
 
                     <ui:NavigationItem
                         Margin="0,0,0,12"
-                        Content="Supporters"
-                        Icon="Heart24"
-                        PageType="{x:Type pages:SupportersPage}"
-                        Tag="supporters" />
-
-                    <ui:NavigationItem
-                        Margin="0,0,0,12"
-                        Icon="Translate24"
-                        PageType="{x:Type pages:TranslatorsPage}"
-                        Tag="translators">
-                        <TextBlock
-                            x:Name="TranslatorsText"
-                            FontSize="10"
-                            Text="{x:Static resources:Strings.About_Translators_Title}" />
-                    </ui:NavigationItem>
-
-                    <ui:NavigationItem
-                        Margin="0,0,0,12"
                         Content="{x:Static resources:Strings.About_Licenses_Title}"
                         Icon="Code24"
                         PageType="{x:Type pages:LicensesPage}"

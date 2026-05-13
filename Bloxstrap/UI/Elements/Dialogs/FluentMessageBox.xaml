@@ -8,7 +8,7 @@
                   xmlns:base="clr-namespace:Voidstrap.UI.Elements.Base"
                   xmlns:controls="clr-namespace:Voidstrap.UI.Elements.Controls"
                   mc:Ignorable="d"
-                  Title="Voidstrap"
+                  Title="NullCore"
                   d:DesignWidth="480"
                   MinWidth="300"
                   MaxWidth="600"
@@ -42,7 +42,7 @@
         <ui:TitleBar
                      x:Name="RootTitleBar"
                      Padding="8"
-                     Title="Voidstrap"
+                     Title="NullCore"
                      ShowMinimize="False"
                      ShowMaximize="False"
                      CanMaximize="False"

@@ -13,7 +13,7 @@
                 FontSize="14"
                 Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                 TextWrapping="Wrap"
-                Text="Learn how to create, configure, and install a Discord Bot so Voidstrap can connect to your Discord server." />
+                Text="Learn how to create, configure, and install a Discord Bot so NullCore can connect to your Discord server." />
         </StackPanel>
         
         <ui:Card Margin="0,0,0,16" Padding="24">
@@ -25,8 +25,8 @@
                 <TextBlock FontSize="14"
                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                            TextWrapping="Wrap">
-                    The Discord Chat feature allows Voidstrap to connect directly to a Discord channel using a Bot.
-                    Once connected, you can send and receive messages inside Voidstrap without opening Discord.
+                    The Discord Chat feature allows NullCore to connect directly to a Discord channel using a Bot.
+                    Once connected, you can send and receive messages inside NullCore without opening Discord.
                     It works using a secure Bot Token and Channel ID that you configure.
                 </TextBlock>
             </StackPanel>
@@ -45,7 +45,7 @@
                     <LineBreak/>
                     2. Click "New Application".
                     <LineBreak/>
-                    3. Give it a name (for example: Voidstrap Bot).
+                    3. Give it a name (for example: NullCore Bot).
                     <LineBreak/>
                     4. Click Create.
                 </TextBlock>
@@ -126,14 +126,14 @@
         <ui:Card Margin="0,0,0,16" Padding="24">
             <StackPanel>
                 <TextBlock FontSize="18" FontWeight="SemiBold"
-                           Text="Using the Options in Voidstrap"
+                           Text="Using the Options in NullCore"
                            Margin="0,0,0,8"/>
 
                 <TextBlock FontSize="14"
                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                            TextWrapping="Wrap">
                     Bot Token:
-                    This is the secret key that allows Voidstrap to control the bot.
+                    This is the secret key that allows NullCore to control the bot.
                     <LineBreak/><LineBreak/>
                     Channel ID:
                     The ID of the Discord channel where messages will be sent and received.

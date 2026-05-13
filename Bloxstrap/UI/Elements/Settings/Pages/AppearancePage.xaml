@@ -24,7 +24,7 @@
             <StackPanel>
 
                 <controls:OptionControl
-            Description="Adds Snow to Voidstraps background (Restart Required)"
+            Description="Adds Snow to NullCore's background (Restart Required)"
             Header="Background Snow">
                     <ui:ToggleSwitch Background="{DynamicResource SystemAccentBrush}" IsChecked="{Binding Snowww, Mode=TwoWay}" />
                 </controls:OptionControl>

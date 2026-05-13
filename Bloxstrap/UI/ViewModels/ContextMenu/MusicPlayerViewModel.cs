@@ -241,7 +241,7 @@ private void UpdateFilteredLibrary()
             });
             MusicLibrary.Add(new TrackItem
             {
-                Title = "LUA NA PRACA Super slowed & reverb 1 HOUR by Bratic",
+                Title = "LUA NA PRACA Super slowed & reverb 1 HOUR",
                 Artist = "Dj Samir",
                 FilePath = "https://drive.google.com/file/d/1fS3uH9ExBdShOE8nUVuzlrJaHjIc-5pq/view?usp=sharing",
                 Icon = null

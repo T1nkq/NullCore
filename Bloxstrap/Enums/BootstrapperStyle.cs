@@ -8,7 +8,7 @@
         ProgressDialog,
         ClassicFluentDialog,
         ByfronDialog,
-        [EnumName(StaticName = "Voidstrap")]
+        [EnumName(StaticName = "NullCore")]
         FluentDialog,
         FluentAeroDialog,
         CustomDialog
