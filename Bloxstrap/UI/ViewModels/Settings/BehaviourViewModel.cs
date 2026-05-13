@@ -21,11 +21,14 @@ namespace Voidstrap.UI.ViewModels.Settings
         private static readonly ConcurrentDictionary<string, (string Url, DateTime Expiry)> _gameIconCache = new();
         private static readonly ConcurrentDictionary<string, Task<string>> _ongoingRequests = new();
         private static readonly TimeSpan CacheDuration = TimeSpan.FromHours(1);
+        private readonly GBSEditorViewModel _gameBasicSettings = new();
 
         public BehaviourViewModel()
         {
             CleanerItems = new List<string>(App.Settings.Prop.CleanerDirectories);
             LoadCpuOptions();
+            LoadCpuCoreLimitOptions();
+            LoadGraphicsQualityOptions();
             LoadSettings();
         }
 
@@ -138,6 +141,8 @@ namespace Voidstrap.UI.ViewModels.Settings
         }
 
         public ObservableCollection<string> CpuOptions { get; } = new ObservableCollection<string>();
+        public ObservableCollection<int> CpuCoreLimitOptions { get; } = new ObservableCollection<int>();
+        public ObservableCollection<GraphicsQualityOption> GraphicsQualityOptions { get; } = new();
 
         private string _selectedCpuPriority = "Automatic";
         public string SelectedCpuPriority
@@ -151,6 +156,71 @@ namespace Voidstrap.UI.ViewModels.Settings
                     OnPropertyChanged(nameof(SelectedCpuPriority));
                     App.Settings.Prop.SelectedCpuPriority = value;
                 }
+            }
+        }
+
+        private void LoadCpuCoreLimitOptions()
+        {
+            CpuCoreLimitOptions.Clear();
+
+            int coreCount = Environment.ProcessorCount;
+            for (int i = 1; i <= coreCount; i++)
+                CpuCoreLimitOptions.Add(i);
+
+            if (!CpuCoreLimitOptions.Contains(App.Settings.Prop.CpuCoreLimit))
+                App.Settings.Prop.CpuCoreLimit = coreCount;
+        }
+
+        private void LoadGraphicsQualityOptions()
+        {
+            GraphicsQualityOptions.Clear();
+            GraphicsQualityOptions.Add(new GraphicsQualityOption("Automatic", 0));
+
+            for (int i = 1; i <= 10; i++)
+                GraphicsQualityOptions.Add(new GraphicsQualityOption(i.ToString(), i));
+        }
+
+        public int SelectedCpuCoreLimit
+        {
+            get => App.Settings.Prop.CpuCoreLimit;
+            set
+            {
+                int clamped = Math.Clamp(value, 1, Environment.ProcessorCount);
+                if (App.Settings.Prop.CpuCoreLimit == clamped)
+                    return;
+
+                App.Settings.Prop.CpuCoreLimit = clamped;
+                App.Settings.Save();
+                CpuCoreLimiter.SetCpuCoreLimit(clamped);
+                OnPropertyChanged(nameof(SelectedCpuCoreLimit));
+            }
+        }
+
+        public int FramerateCap
+        {
+            get => _gameBasicSettings.FramerateCap;
+            set
+            {
+                int clamped = Math.Max(0, value);
+                if (_gameBasicSettings.FramerateCap == clamped)
+                    return;
+
+                _gameBasicSettings.FramerateCap = clamped;
+                OnPropertyChanged(nameof(FramerateCap));
+            }
+        }
+
+        public int GraphicsQuality
+        {
+            get => _gameBasicSettings.GraphicsQuality;
+            set
+            {
+                int clamped = Math.Clamp(value, 0, 10);
+                if (_gameBasicSettings.GraphicsQuality == clamped)
+                    return;
+
+                _gameBasicSettings.GraphicsQuality = clamped;
+                OnPropertyChanged(nameof(GraphicsQuality));
             }
         }
 
@@ -366,6 +436,18 @@ namespace Voidstrap.UI.ViewModels.Settings
         {
             public string Name { get; set; } = string.Empty;
             public int Seconds { get; set; }
+        }
+
+        public class GraphicsQualityOption
+        {
+            public GraphicsQualityOption(string name, int value)
+            {
+                Name = name;
+                Value = value;
+            }
+
+            public string Name { get; }
+            public int Value { get; }
         }
     }
 }

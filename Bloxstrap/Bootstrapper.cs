@@ -299,8 +299,8 @@ namespace Voidstrap
             bool ok = await GithubUpdater.DownloadAndInstallUpdate(latestTag);
             if (ok)
             {
-                App.Logger.WriteLine(logIdent, $"Update installed restarting {App.ProjectName}...");
-                RestartApplication();
+                App.Logger.WriteLine(logIdent, $"Update staged, closing {App.ProjectName} so the updater can apply it...");
+                Environment.Exit(0);
             }
             else
             {

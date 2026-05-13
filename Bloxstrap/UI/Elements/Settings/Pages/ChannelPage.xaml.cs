@@ -115,16 +115,57 @@ namespace Voidstrap.UI.Elements.Settings.Pages
             try
             {
                 string currentVersion = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "0.0.0";
-                string latestVersion = await GetLatestGitHubVersion();
+                var release = await global::GithubUpdater.GetLatestReleaseAsync();
 
-                if (IsNewerVersion(latestVersion, currentVersion))
+                if (release is null || string.IsNullOrWhiteSpace(release.TagName))
                 {
                     Frontend.ShowMessageBox(
-                        $"A new version ({latestVersion}) is available!"
+                        "Could not fetch the latest GitHub release.",
+                        MessageBoxImage.Warning
                     );
+                    return;
+                }
 
-                    if (await global::GithubUpdater.DownloadAndInstallUpdate(latestVersion))
+                if (global::GithubUpdater.IsNewerVersion(release.TagName, currentVersion))
+                {
+                    var dialog = new UpdatePromptDialog(release, currentVersion)
+                    {
+                        Owner = Window.GetWindow(this)
+                    };
+
+                    dialog.ShowDialog();
+
+                    if (!dialog.ShouldDownload)
+                        return;
+
+                    string? originalButtonContent = null;
+                    if (sender is System.Windows.Controls.Button button)
+                    {
+                        originalButtonContent = button.Content?.ToString();
+                        button.Content = "Downloading...";
+                    }
+
+                    if (sender is FrameworkElement element)
+                        element.IsEnabled = false;
+
+                    bool updateStarted = await global::GithubUpdater.DownloadAndInstallUpdate(release.TagName);
+                    if (updateStarted)
+                    {
                         Application.Current.Shutdown();
+                    }
+                    else
+                    {
+                        if (sender is System.Windows.Controls.Button failedButton)
+                            failedButton.Content = originalButtonContent ?? "Check for Updates";
+
+                        if (sender is FrameworkElement failedElement)
+                            failedElement.IsEnabled = true;
+
+                        Frontend.ShowMessageBox(
+                            "Update download failed. Check the release assets on GitHub.",
+                            MessageBoxImage.Error
+                        );
+                    }
                 }
                 else
                 {
@@ -139,28 +180,6 @@ namespace Voidstrap.UI.Elements.Settings.Pages
                     $"Error checking for updates:\n{ex.Message}"
                 );
             }
-        }
-
-        private async Task<string> GetLatestGitHubVersion()
-        {
-            using var client = new HttpClient();
-            client.DefaultRequestHeaders.Add("User-Agent", $"{App.ProjectName}-Updater");
-
-            string apiUrl = $"https://api.github.com/repos/{App.ProjectRepository}/releases/latest";
-            string json = await client.GetStringAsync(apiUrl);
-
-            using var doc = JsonDocument.Parse(json);
-            return doc.RootElement.GetProperty("tag_name").GetString() ?? "0.0.0";
-        }
-
-        private bool IsNewerVersion(string latest, string current)
-        {
-            if (Version.TryParse(latest.TrimStart('v'), out var latestV) &&
-                Version.TryParse(current, out var currentV))
-            {
-                return latestV > currentV;
-            }
-            return false;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

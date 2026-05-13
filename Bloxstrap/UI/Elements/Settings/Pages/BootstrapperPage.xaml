@@ -119,6 +119,40 @@
                                     SelectedItem="{Binding SelectedCpuPriority, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         </controls:OptionControl>
 
+                        <controls:OptionControl
+                            Header="NullCore CPU Core Limit"
+                            Description="Limit how many CPU cores NullCore itself can use.">
+                            <ComboBox Grid.Column="1"
+                                    Margin="8,0,8,0"
+                                    Padding="10,5,10,5"
+                                    Width="200"
+                                    ItemsSource="{Binding CpuCoreLimitOptions}"
+                                    SelectedItem="{Binding SelectedCpuCoreLimit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </controls:OptionControl>
+
+                        <controls:OptionControl
+                            Header="FPS Cap"
+                            Description="Set Roblox framerate cap in GlobalBasicSettings. Use 0 for Roblox default.">
+                            <ui:TextBox
+                                Width="100"
+                                Margin="5,0,0,0"
+                                Padding="10,5,10,5"
+                                Text="{Binding FramerateCap, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                        </controls:OptionControl>
+
+                        <controls:OptionControl
+                            Header="Graphics Quality"
+                            Description="Set Roblox manual graphics level. Automatic lets Roblox choose.">
+                            <ComboBox
+                                Width="200"
+                                Margin="5,0,0,0"
+                                Padding="10,5,10,5"
+                                ItemsSource="{Binding GraphicsQualityOptions}"
+                                DisplayMemberPath="Name"
+                                SelectedValuePath="Value"
+                                SelectedValue="{Binding GraphicsQuality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </controls:OptionControl>
+
                             <controls:OptionControl Header="Trim Roblox Memory" Description="Cuts Roblox's memory in half to help with RAM usage. Useful for multi-account use.">
                                 <ui:ToggleSwitch IsChecked="{Binding MultiAccount, Mode=TwoWay}" />
                             </controls:OptionControl>

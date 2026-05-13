@@ -72,7 +72,6 @@ namespace Voidstrap.UI.ViewModels.Settings
         private const int DISP_CHANGE_SUCCESSFUL = 0;
         private CancellationTokenSource? _loadChannelCts;
 
-        public ObservableCollection<int> CpuLimitOptions { get; set; }
         public ObservableCollection<DisplayMode> AvailableResolutionsInGame { get; } = new();
 
 
@@ -89,15 +88,6 @@ namespace Voidstrap.UI.ViewModels.Settings
         {
             LoadAvailableResolutions();
             _ = LoadNetworkStreamingStateAsync();
-
-            CpuLimitOptions = new ObservableCollection<int>();
-            int coreCount = Environment.ProcessorCount;
-
-            for (int i = 1; i <= coreCount; i++)
-                CpuLimitOptions.Add(i);
-
-            if (!CpuLimitOptions.Contains(App.Settings.Prop.CpuCoreLimit))
-                SelectedCpuLimit = coreCount;
 
             PriorityOptions = new ObservableCollection<string>
             {
@@ -283,21 +273,6 @@ namespace Voidstrap.UI.ViewModels.Settings
                     _selectedPriority = value;
                     OnPropertyChanged(nameof(SelectedPriority));
                     App.Settings.Prop.PriorityLimit = value;
-                }
-            }
-        }
-
-        public int SelectedCpuLimit
-        {
-            get => App.Settings.Prop.CpuCoreLimit;
-            set
-            {
-                if (App.Settings.Prop.CpuCoreLimit != value)
-                {
-                    App.Settings.Prop.CpuCoreLimit = value;
-                    OnPropertyChanged(nameof(SelectedCpuLimit));
-                    App.Settings.Save();
-                    CpuCoreLimiter.SetCpuCoreLimit(value);
                 }
             }
         }

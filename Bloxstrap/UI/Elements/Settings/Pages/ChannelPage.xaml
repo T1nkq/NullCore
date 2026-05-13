@@ -31,15 +31,6 @@
             Text="NullCore" />
 
 
-        <controls:OptionControl 
-    Header="CPU Core Limit"
-    Description="Limit the max CPU cores that the app uses.">
-
-            <ComboBox Grid.Column="1" Margin="8,0,8,0" Padding="10,5,10,5" Width="200"
-              ItemsSource="{Binding CpuLimitOptions}" 
-              SelectedItem="{Binding SelectedCpuLimit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        </controls:OptionControl>
-
         <!--  Auto Update Toggle  -->
         <controls:OptionControl 
             Header="{x:Static resources:Strings.Menu_Behaviour_AutoUpdate_Title}"

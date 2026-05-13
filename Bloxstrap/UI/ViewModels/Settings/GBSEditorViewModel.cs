@@ -26,11 +26,27 @@ namespace Voidstrap.UI.ViewModels.Settings
 
         private void LoadSettings()
         {
-            if (!File.Exists(_settingsPath))
-                return;
+            if (File.Exists(_settingsPath))
+            {
+                _doc = XDocument.Load(_settingsPath);
+                _props = _doc.Descendants("Properties").FirstOrDefault();
+            }
 
-            _doc = XDocument.Load(_settingsPath);
-            _props = _doc.Descendants("Properties").FirstOrDefault();
+            if (_props is null)
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(_settingsPath)!);
+                _doc = new XDocument(
+                    new XElement("roblox",
+                        new XElement("Item",
+                            new XAttribute("class", "UserGameSettings"),
+                            new XElement("Properties")
+                        )
+                    )
+                );
+
+                _props = _doc.Descendants("Properties").FirstOrDefault();
+                SaveSettings();
+            }
         }
 
         private void SaveSettings()
