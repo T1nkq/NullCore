@@ -45,6 +45,7 @@ namespace Voidstrap.Models.Persistable
         public bool UseFastFlagManager { get; set; } = true;
         public bool WPFSoftwareRender { get; set; } = false;
         public bool ConfirmLaunches { get; set; } = true;
+        public bool MultiInstanceLaunching { get; set; } = false;
 
         public bool SmooothBARRyesirikikthxlucipook { get; set; } = false; // wanna keep this on false so people may not be annoyed by it being on
         public bool HasLaunchedGame { get; set; } = false;

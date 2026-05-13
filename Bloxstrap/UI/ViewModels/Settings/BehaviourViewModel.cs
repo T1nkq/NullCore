@@ -173,6 +173,12 @@ namespace Voidstrap.UI.ViewModels.Settings
             set => App.Settings.Prop.ConfirmLaunches = value;
         }
 
+        public bool MultiInstanceLaunching
+        {
+            get => App.Settings.Prop.MultiInstanceLaunching;
+            set => App.Settings.Prop.MultiInstanceLaunching = value;
+        }
+
         public bool IsBetterServersEnabled
         {
             get => App.Settings.Prop.IsBetterServersEnabled;

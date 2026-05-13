@@ -266,6 +266,7 @@ namespace Voidstrap
 
             if (App.Settings.Prop.ConfirmLaunches
                 && robloxRunning
+                && !App.Settings.Prop.MultiInstanceLaunching
                 && !(App.Settings.Prop.IsGameEnabled && !string.IsNullOrWhiteSpace(App.Settings.Prop.LaunchGameID)))
             {
                 var result = Frontend.ShowMessageBox(
@@ -293,6 +294,29 @@ namespace Voidstrap
             }
 
             Mutex? mutex = null;
+
+            if (launchMode == LaunchMode.Player && App.Settings.Prop.MultiInstanceLaunching)
+            {
+                try
+                {
+                    mutex = new Mutex(true, LocalMutexName, out bool createdNew);
+
+                    if (createdNew)
+                    {
+                        App.Logger.WriteLine(LOG_IDENT, "Acquired Roblox singleton mutex for multi-instance launching");
+                    }
+                    else
+                    {
+                        App.Logger.WriteLine(LOG_IDENT, "Roblox singleton mutex already exists");
+                        mutex.Dispose();
+                        mutex = null;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    App.Logger.WriteLine(LOG_IDENT, $"Failed to acquire multi-instance mutex: {ex}");
+                }
+            }
 
             if (App.Settings.Prop.ExclusiveFullscreen)
             {

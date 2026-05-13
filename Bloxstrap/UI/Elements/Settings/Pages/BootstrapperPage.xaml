@@ -43,6 +43,12 @@
                 </controls:OptionControl>
 
                     <controls:OptionControl
+                    Header="{x:Static resources:Strings.Menu_Behaviour_MultiInstances_Title}"
+                    Description="{x:Static resources:Strings.Menu_Behaviour_MultiInstances_Description}">
+                    <ui:ToggleSwitch IsChecked="{Binding MultiInstanceLaunching, Mode=TwoWay}" />
+                </controls:OptionControl>
+
+                    <controls:OptionControl
                     Header="{x:Static resources:Strings.Menu_Behaviour_ForceRobloxLanguage_Title}"
                     Description="{x:Static resources:Strings.Menu_Behaviour_ForceRobloxLanguage_Description}"
                     HelpLink="https://github.com/BloxstrapLabs/Bloxstrap/wiki/Information-on-Roblox-app-localisation">
