@@ -26,6 +26,27 @@ namespace Voidstrap.UI.ViewModels.Settings
         public string? ImageUrl { get; set; }
     }
 
+    internal sealed class GitHubReleaseNewsDto
+    {
+        [JsonProperty("tag_name")]
+        public string? TagName { get; set; }
+
+        [JsonProperty("name")]
+        public string? Name { get; set; }
+
+        [JsonProperty("body")]
+        public string? Body { get; set; }
+
+        [JsonProperty("published_at")]
+        public string? PublishedAt { get; set; }
+
+        [JsonProperty("created_at")]
+        public string? CreatedAt { get; set; }
+
+        [JsonProperty("html_url")]
+        public string? HtmlUrl { get; set; }
+    }
+
     public sealed partial class NewsViewModel : ObservableObject, IDisposable
     {
         private readonly HttpClient _http;
@@ -33,8 +54,8 @@ namespace Voidstrap.UI.ViewModels.Settings
         private readonly DispatcherTimer _timer;
         private CancellationTokenSource _cts = new();
 
-        private const string FeedUrl =
-            "https://raw.githubusercontent.com/T1nkq/NullCore/main/news.json";
+        private static string FeedUrl =>
+            $"https://api.github.com/repos/{App.ProjectRepository}/releases?per_page=50";
 
         private static string BasePath => Paths.Base;
         private string CachePath => Path.Combine(BasePath, "news_cache.json");
@@ -255,12 +276,40 @@ namespace Voidstrap.UI.ViewModels.Settings
                     NullValueHandling = NullValueHandling.Ignore
                 };
 
-                var dtos = arr.ToObject<NewsItemDto[]>(Newtonsoft.Json.JsonSerializer.Create(settings)) ?? Array.Empty<NewsItemDto>();
-
                 static DateTime ParseDate(string? s) =>
                     DateTime.TryParse(s, null, System.Globalization.DateTimeStyles.AdjustToUniversal, out var d)
                         ? d.ToLocalTime()
                         : DateTime.MinValue;
+
+                bool looksLikeGitHubReleases = arr
+                    .OfType<JObject>()
+                    .Any(o => o.ContainsKey("tag_name") || o.ContainsKey("published_at"));
+
+                if (looksLikeGitHubReleases)
+                {
+                    var releases = arr.ToObject<GitHubReleaseNewsDto[]>(Newtonsoft.Json.JsonSerializer.Create(settings))
+                                   ?? Array.Empty<GitHubReleaseNewsDto>();
+
+                    return releases
+                        .Where(r => !string.IsNullOrWhiteSpace(r.TagName) || !string.IsNullOrWhiteSpace(r.Name))
+                        .Select(r =>
+                        {
+                            string content = r.Body?.Trim() ?? string.Empty;
+                            if (!string.IsNullOrWhiteSpace(r.HtmlUrl))
+                                content = string.IsNullOrWhiteSpace(content) ? r.HtmlUrl.Trim() : $"{content}\n\n{r.HtmlUrl.Trim()}";
+
+                            return new NewsItem
+                            {
+                                Title = (r.Name ?? r.TagName ?? "Untitled").Trim(),
+                                Content = content,
+                                Date = ParseDate(r.PublishedAt ?? r.CreatedAt),
+                                ImageUrl = string.Empty
+                            };
+                        })
+                        .ToList();
+                }
+
+                var dtos = arr.ToObject<NewsItemDto[]>(Newtonsoft.Json.JsonSerializer.Create(settings)) ?? Array.Empty<NewsItemDto>();
 
                 return dtos.Select(d => new NewsItem
                 {

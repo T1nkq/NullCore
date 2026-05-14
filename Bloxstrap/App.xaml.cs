@@ -343,12 +343,27 @@ namespace Voidstrap
 
                 Locale.Set(Settings.Prop.Locale);
 
+                ShowDotNet10NoticeIfNeeded();
+
                 if (!LaunchSettings.BypassUpdateCheck)
                     Installer.HandleUpgrade();
 
                 WindowsRegistry.RegisterApis();
                 LaunchHandler.ProcessLaunchArgs();
             }
+        }
+
+        private static void ShowDotNet10NoticeIfNeeded()
+        {
+            if (State.Prop.DotNet10NoticeShown || LaunchSettings.QuietFlag.Active)
+                return;
+
+            Frontend.ShowMessageBox(
+                $"{ProjectName} runs on .NET 10.\n\nIf Windows asks to download or install the .NET 10 Runtime, allow it so {ProjectName} can start correctly.\n\nThis notice is shown only once.",
+                MessageBoxImage.Information);
+
+            State.Prop.DotNet10NoticeShown = true;
+            State.Save();
         }
 
         protected override void OnExit(ExitEventArgs e)

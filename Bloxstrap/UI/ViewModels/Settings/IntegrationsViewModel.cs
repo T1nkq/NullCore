@@ -7,7 +7,6 @@ using System.Windows;
 using System.Windows.Input;
 using System.Xml.Linq;
 using Voidstrap.Integrations;
-using Voidstrap.UI.Elements.ContextMenu;
 using Wpf.Ui.Appearance;
 
 namespace Voidstrap.UI.ViewModels.Settings
@@ -17,7 +16,6 @@ namespace Voidstrap.UI.ViewModels.Settings
         public ICommand AddIntegrationCommand => new RelayCommand(AddIntegration);
         public ICommand DeleteIntegrationCommand => new RelayCommand(DeleteIntegration);
         public ICommand BrowseIntegrationLocationCommand => new RelayCommand(BrowseIntegrationLocation);
-        public ICommand AccountWindowCommand { get; }
 
         private readonly string _appStoragePath =
         Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
@@ -30,8 +28,6 @@ namespace Voidstrap.UI.ViewModels.Settings
             _watcher = watcher;
 
             LoadSettings();
-
-            AccountWindowCommand = new RelayCommand(AccountWindow);
         }
 
         private void AddIntegration()
@@ -175,12 +171,6 @@ namespace Voidstrap.UI.ViewModels.Settings
         {
             get => App.Settings.Prop.NotificationWindowShow;
             set => App.Settings.Prop.NotificationWindowShow = value;
-        }
-
-        private void AccountWindow()
-        {
-            var accountWindow = new AccountManagerWindow();
-            accountWindow.Show();
         }
 
         public bool PlayerLogsEnabled

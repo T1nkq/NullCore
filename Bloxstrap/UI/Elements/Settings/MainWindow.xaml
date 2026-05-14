@@ -309,6 +309,7 @@
                 <ui:NavigationFluent.Items>
                     <ui:NavigationItem Content="Core" IsEnabled="False" Opacity="0.6" />
                     <ui:NavigationItem Content="{x:Static resources:Strings.Menu_Integrations_Title}" Icon="Add12" Tag="Add16" PageType="{x:Type pages:IntegrationsPage}" />
+                    <ui:NavigationItem Content="Bots" Icon="Apps32" Tag="Apps24" PageType="{x:Type pages:BotsPage}" />
                     <ui:NavigationItem Content="Deployment" Icon="PlaySettings20" Tag="Play20" PageType="{x:Type pages:BehaviourPage}" />
                     <ui:NavigationSeparator />
                     <ui:NavigationItem Content="Configuration" IsEnabled="False" Opacity="0.6" />
@@ -372,45 +373,6 @@
                 </Grid>
                 <Frame x:Name="RootFrame" Grid.Row="1"/>
             </Grid>
-        </Grid>
-
-        <Grid Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Bottom">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-
-            <TabControl x:Name="WorkspaceTabs" 
-                ItemsSource="{Binding Tabs}" 
-                SelectedItem="{Binding SelectedTab, Mode=TwoWay}" 
-                Background="Transparent" 
-                BorderThickness="0" 
-                Height="34" 
-                MinWidth="200" 
-                Grid.Column="0" 
-                Margin="275,5,0,0"
-                SelectionChanged="WorkspaceTabs_SelectionChanged">
-                <TabControl.Template>
-                    <ControlTemplate TargetType="TabControl">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-                            <ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-                                <TabPanel x:Name="HeaderPanel" IsItemsHost="True" Background="Transparent"/>
-                            </ScrollViewer>
-                            <ContentPresenter Grid.Row="1" ContentSource="SelectedContent" Margin="{TemplateBinding Padding}"/>
-                        </Grid>
-                    </ControlTemplate>
-                </TabControl.Template>
-            </TabControl>
-
-            <ui:Button Grid.Column="1" Width="34" Height="34" Appearance="Secondary" Icon="Add16" Click="AddTab_Click" Margin="0,0,16,6">
-                <ui:Button.ToolTip>
-                    <ToolTip>Tabs - Beta</ToolTip>
-                </ui:Button.ToolTip>
-            </ui:Button>
         </Grid>
 
         <Border Grid.Row="2"

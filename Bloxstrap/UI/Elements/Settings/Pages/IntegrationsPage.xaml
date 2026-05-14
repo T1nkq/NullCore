@@ -112,16 +112,6 @@
             <ui:ToggleSwitch IsChecked="{Binding UncapFPS, Mode=TwoWay}" />
         </controls:OptionControl>
 
-        <controls:OptionControl 
-    Header="Account Switcher"
-    Description="Easily create or switch Roblox accounts. Backup Accounts for Later Use.">
-            <StackPanel>
-                <Button Content="View"
-                HorizontalAlignment="Left"
-                Command="{Binding AccountWindowCommand}"/>
-            </StackPanel>
-        </controls:OptionControl>
-
         <TextBlock Text="{x:Static resources:Strings.Menu_Integrations_Custom_Title}" FontSize="20" FontWeight="Medium" Margin="0,16,0,0" />
         <TextBlock Text="{x:Static resources:Strings.Menu_Integrations_Custom_Description}" TextWrapping="Wrap" Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
         <Grid Margin="0,8,0,0">

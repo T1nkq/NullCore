@@ -14,6 +14,8 @@ namespace Voidstrap.Models.Persistable
 
         public bool PromptWebView2Install { get; set; } = true;
 
+        public bool DotNet10NoticeShown { get; set; } = false;
+
         public int LastPage { get; set; } = 0;
 
         public AppState Player { get; set; } = new();
