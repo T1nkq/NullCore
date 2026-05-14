@@ -279,6 +279,41 @@ namespace Voidstrap.UI.ViewModels.Settings
             set => App.Settings.Prop.OptimizeRoblox = value;
         }
 
+        public int SmartMemoryGovernorLevel
+        {
+            get => App.Settings.Prop.SmartMemoryGovernorLevel;
+            set
+            {
+                int clamped = Math.Clamp(value, 0, 4);
+                if (App.Settings.Prop.SmartMemoryGovernorLevel == clamped)
+                    return;
+
+                App.Settings.Prop.SmartMemoryGovernorLevel = clamped;
+                App.Settings.Save();
+                OnPropertyChanged(nameof(SmartMemoryGovernorLevel));
+                OnPropertyChanged(nameof(SmartMemoryGovernorLevelText));
+                OnPropertyChanged(nameof(SmartMemoryGovernorDescription));
+            }
+        }
+
+        public string SmartMemoryGovernorLevelText => App.Settings.Prop.SmartMemoryGovernorLevel switch
+        {
+            1 => "Light",
+            2 => "Balanced",
+            3 => "Strong",
+            4 => "Bot Farm",
+            _ => "Off"
+        };
+
+        public string SmartMemoryGovernorDescription => App.Settings.Prop.SmartMemoryGovernorLevel switch
+        {
+            1 => "Gently lowers Roblox memory priority. No forced trims, no memory compression.",
+            2 => "Balanced page-priority control for multiple instances. Smart RAM Governor takes priority over the legacy cleaner.",
+            3 => "Stronger RAM pressure handling for bot sessions. Avoids EmptyWorkingSet and working-set purges.",
+            4 => "Maximum safe RAM governor for bot farms. Lowest page priority, still no Mem Reduct style trimming.",
+            _ => "Disabled. Use this instead of the legacy cleaner when you want safer RAM optimization."
+        };
+
         public bool MultiAccount
         {
             get => App.Settings.Prop.MultiAccount;

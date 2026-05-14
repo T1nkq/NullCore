@@ -55,6 +55,7 @@ namespace Voidstrap.Models.Persistable
         public bool Fleasion { get; set; } = false;
         public string PlaceId { get; set; } = "";
         public bool OptimizeRoblox { get; set; } = false;
+        public int SmartMemoryGovernorLevel { get; set; } = 0;
         public bool BackgroundUpdatesEnabled { get; set; } = true;
         public bool VoidNotify { get; set; } = true;
         public bool ServerPingCounter { get; set; } = false;

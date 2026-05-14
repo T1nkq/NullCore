@@ -79,6 +79,7 @@ namespace Voidstrap
         private const float CpuHighThreshold = 80f;
         private const int MinWorkingSetMB = 50;
         private const int OptimizerIntervalMs = 3000;
+        private const int SmartMemoryGovernorIntervalMs = 5000;
 
         #endregion
 
@@ -90,8 +91,30 @@ namespace Voidstrap
         [DllImport("kernel32.dll", SetLastError = true)]
         private static extern bool SetPriorityClass(IntPtr handle, uint priorityClass);
 
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool SetProcessInformation(
+            IntPtr handle,
+            PROCESS_INFORMATION_CLASS processInformationClass,
+            ref PROCESS_MEMORY_PRIORITY_INFORMATION processInformation,
+            int processInformationSize);
+
+        private enum PROCESS_INFORMATION_CLASS
+        {
+            ProcessMemoryPriority = 0
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct PROCESS_MEMORY_PRIORITY_INFORMATION
+        {
+            public uint MemoryPriority;
+        }
+
         private const uint PROCESS_MODE_BACKGROUND_BEGIN = 0x00100000;
         private const uint PROCESS_MODE_BACKGROUND_END = 0x00200000;
+        private const uint MEMORY_PRIORITY_VERY_LOW = 1;
+        private const uint MEMORY_PRIORITY_LOW = 2;
+        private const uint MEMORY_PRIORITY_MEDIUM = 3;
+        private const uint MEMORY_PRIORITY_BELOW_NORMAL = 4;
 
         #endregion
 
@@ -116,6 +139,7 @@ namespace Voidstrap
         private Process? _robloxProcess;
         private DispatcherTimer? _memoryCleanerTimer;
         private CancellationTokenSource? _optimizationCts;
+        private CancellationTokenSource? _smartMemoryGovernorCts;
         private CancellationTokenSource? _cpuWatcherCts;
         private AsyncMutex? _mutex;
         private int _appPid = 0;
@@ -546,12 +570,6 @@ namespace Voidstrap
                 await LaunchWatcherIfNeeded(logFileName, ct);
 
                 await Task.Delay(2500, ct).ConfigureAwait(false);
-
-                if (_robloxProcess is not null)
-                {
-                    _robloxProcess.EnableRaisingEvents = true;
-                    _robloxProcess.Exited += (_, __) => StopOptimizer();
-                }
             }
             catch (Exception ex)
             {
@@ -648,6 +666,7 @@ namespace Voidstrap
                     ?? throw new InvalidOperationException("Failed to start Roblox process.");
 
                 _appPid = _robloxProcess.Id;
+                AttachRobloxExitHandlers(_robloxProcess);
 
                 _ = Task.Run(() => TryApplyPriorityAsync(_robloxProcess, LOG_IDENT, ct), ct);
 
@@ -656,9 +675,18 @@ namespace Voidstrap
                 StartCpuLimitWatcherIfNeeded();
                 RestartMemoryCleanerFromSettings();
                 StartOptimizerIfNeeded();
+                StartSmartMemoryGovernorIfNeeded();
 
-                if (App.Settings.Prop?.MultiAccount == true)
+                if (App.Settings.Prop?.MultiAccount == true &&
+                    App.Settings.Prop?.SmartMemoryGovernorLevel <= 0)
+                {
                     RobloxMemoryCleaner.CleanAllRobloxMemory();
+                }
+                else if (App.Settings.Prop?.MultiAccount == true)
+                {
+                    App.Logger.WriteLine("MemoryCleaner",
+                        "Legacy one-shot trim skipped because Smart RAM Governor is enabled.");
+                }
             }
             catch (Win32Exception ex) when (ex.NativeErrorCode == 1223)
             {
@@ -864,10 +892,18 @@ namespace Voidstrap
 
             var settings = NullCoreRobloxSettingsManager.Load();
             int seconds = settings.MemoryCleanerIntervalSeconds;
+            int smartGovernorLevel = Math.Clamp(App.Settings.Prop?.SmartMemoryGovernorLevel ?? 0, 0, 4);
 
             if (seconds <= 0)
             {
                 App.Logger.WriteLine("MemoryCleaner", "Memory cleaner disabled.");
+                return;
+            }
+
+            if (smartGovernorLevel > 0)
+            {
+                App.Logger.WriteLine("MemoryCleaner",
+                    "Legacy forced cleaner skipped because Smart RAM Governor is enabled.");
                 return;
             }
 
@@ -911,6 +947,193 @@ namespace Voidstrap
             _optimizationCts = null;
         }
 
+        private void StartSmartMemoryGovernorIfNeeded()
+        {
+            int level = Math.Clamp(App.Settings.Prop?.SmartMemoryGovernorLevel ?? 0, 0, 4);
+            if (level <= 0)
+            {
+                App.Logger.WriteLine("SmartMemoryGovernor", "Disabled.");
+                return;
+            }
+
+            _smartMemoryGovernorCts?.Cancel();
+            _smartMemoryGovernorCts = new CancellationTokenSource();
+            Task.Run(() => SmartMemoryGovernorLoop(_smartMemoryGovernorCts.Token));
+            App.Logger.WriteLine("SmartMemoryGovernor", $"Started at level {level}.");
+        }
+
+        private void StopSmartMemoryGovernor()
+        {
+            _smartMemoryGovernorCts?.Cancel();
+            _smartMemoryGovernorCts = null;
+        }
+
+        private void AttachRobloxExitHandlers(Process process)
+        {
+            process.EnableRaisingEvents = true;
+            process.Exited += (_, __) =>
+            {
+                StopOptimizer();
+                StopSmartMemoryGovernor();
+            };
+        }
+
+        private async Task SmartMemoryGovernorLoop(CancellationToken token)
+        {
+            var appliedPriorities = new Dictionary<int, uint>();
+            int emptyRounds = 0;
+
+            while (!token.IsCancellationRequested)
+            {
+                try
+                {
+                    int level = Math.Clamp(App.Settings.Prop?.SmartMemoryGovernorLevel ?? 0, 0, 4);
+                    if (level <= 0)
+                        break;
+
+                    uint memoryPriority = GetSmartMemoryPriority(level);
+                    var robloxProcesses = GetRobloxPlayerProcesses();
+                    var activePids = robloxProcesses.Select(process => process.Id).ToHashSet();
+
+                    if (robloxProcesses.Count == 0)
+                    {
+                        if (++emptyRounds >= 6)
+                            break;
+
+                        await Task.Delay(SmartMemoryGovernorIntervalMs, token);
+                        continue;
+                    }
+
+                    emptyRounds = 0;
+
+                    foreach (var proc in robloxProcesses)
+                    {
+                        try
+                        {
+                            if (proc.HasExited)
+                                continue;
+
+                            proc.Refresh();
+
+                            if (appliedPriorities.TryGetValue(proc.Id, out uint applied) &&
+                                applied == memoryPriority)
+                                continue;
+
+                            if (TrySetProcessMemoryPriority(proc, memoryPriority))
+                            {
+                                appliedPriorities[proc.Id] = memoryPriority;
+                                App.Logger.WriteLine(
+                                    "SmartMemoryGovernor",
+                                    $"PID {proc.Id}: level {level}, memory priority {memoryPriority}, RAM {FormatBytes(proc.WorkingSet64)}.");
+                            }
+                        }
+                        catch (Exception ex) when (!token.IsCancellationRequested)
+                        {
+                            App.Logger.WriteLine("SmartMemoryGovernor", $"PID {proc.Id}: {ex.Message}");
+                        }
+                        finally
+                        {
+                            proc.Dispose();
+                        }
+                    }
+
+                    appliedPriorities
+                        .Keys
+                        .Where(pid => !activePids.Contains(pid))
+                        .ToList()
+                        .ForEach(pid => appliedPriorities.Remove(pid));
+
+                    await Task.Delay(SmartMemoryGovernorIntervalMs, token);
+                }
+                catch (TaskCanceledException)
+                {
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    App.Logger.WriteLine("SmartMemoryGovernor", $"[Loop] {ex.Message}");
+                    await Task.Delay(SmartMemoryGovernorIntervalMs, token);
+                }
+            }
+
+            App.Logger.WriteLine("SmartMemoryGovernor", "Stopped.");
+        }
+
+        private static List<Process> GetRobloxPlayerProcesses()
+        {
+            string[] processNames =
+            {
+                ProcRobloxPlayer,
+                Path.GetFileNameWithoutExtension(ProcRobloxExe),
+                Path.GetFileNameWithoutExtension(ProcEuroTrucks),
+                App.RobloxPlayerAppName,
+                "RobloxPlayer",
+                "Roblox"
+            };
+
+            var processesByPid = new Dictionary<int, Process>();
+
+            foreach (string processName in processNames
+                         .Where(name => !string.IsNullOrWhiteSpace(name))
+                         .Select(name => Path.GetFileNameWithoutExtension(name) ?? name)
+                         .Distinct(StringComparer.OrdinalIgnoreCase))
+            {
+                Process[] processes;
+                try
+                {
+                    processes = Process.GetProcessesByName(processName);
+                }
+                catch
+                {
+                    continue;
+                }
+
+                foreach (var process in processes)
+                {
+                    if (!processesByPid.TryAdd(process.Id, process))
+                        process.Dispose();
+                }
+            }
+
+            return processesByPid.Values.ToList();
+        }
+
+        private static uint GetSmartMemoryPriority(int level) => level switch
+        {
+            1 => MEMORY_PRIORITY_BELOW_NORMAL,
+            2 => MEMORY_PRIORITY_MEDIUM,
+            3 => MEMORY_PRIORITY_LOW,
+            _ => MEMORY_PRIORITY_VERY_LOW
+        };
+
+        private static bool TrySetProcessMemoryPriority(Process process, uint memoryPriority)
+        {
+            var info = new PROCESS_MEMORY_PRIORITY_INFORMATION
+            {
+                MemoryPriority = memoryPriority
+            };
+
+            return SetProcessInformation(
+                process.Handle,
+                PROCESS_INFORMATION_CLASS.ProcessMemoryPriority,
+                ref info,
+                Marshal.SizeOf<PROCESS_MEMORY_PRIORITY_INFORMATION>());
+        }
+
+        private static string FormatBytes(long bytes)
+        {
+            if (bytes < 1024)
+                return $"{bytes} B";
+
+            if (bytes < 1024 * 1024)
+                return $"{bytes / 1024.0:F1} KB";
+
+            if (bytes < 1024L * 1024L * 1024L)
+                return $"{bytes / 1024.0 / 1024.0:F1} MB";
+
+            return $"{bytes / 1024.0 / 1024.0 / 1024.0:F2} GB";
+        }
+
         private async Task OptimizerLoop(CancellationToken token)
         {
             var processNames = new[] { "Roblox", ProcRobloxPlayer, "Roblox Game Client" };
@@ -944,7 +1167,6 @@ namespace Voidstrap
                                 optimizedPids.Add(proc.Id);
                             }
 
-                            SetProcessWorkingSetSize(proc.Handle, (IntPtr)(-1), (IntPtr)(-1));
                             await MonitorProcessCpu(proc, cpuCounters, token);
                         }
                         catch (Exception ex) when (!token.IsCancellationRequested)

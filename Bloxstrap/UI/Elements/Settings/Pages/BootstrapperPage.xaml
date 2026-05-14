@@ -145,17 +145,55 @@
                                 SelectedValue="{Binding GraphicsQuality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         </controls:OptionControl>
 
-                            <controls:OptionControl Header="Trim Roblox Memory" Description="Cuts Roblox's memory in half to help with RAM usage. Useful for multi-account use.">
-                                <ui:ToggleSwitch IsChecked="{Binding MultiAccount, Mode=TwoWay}" />
+                            <controls:OptionControl Header="Trim Roblox Memory" Description="Legacy one-shot trim. Smart RAM Governor takes priority when enabled.">
+                                 <ui:ToggleSwitch IsChecked="{Binding MultiAccount, Mode=TwoWay}" />
+                             </controls:OptionControl>
+
+                             <controls:OptionControl Header="Optimize Roblox" Description="Optimizes Roblox based on your current CPU, GPU, and memory.">
+                             <ui:ToggleSwitch IsChecked="{Binding OptimizeRoblox, Mode=TwoWay}" />
+                         </controls:OptionControl>
+
+                            <controls:OptionControl Header="Smart RAM Governor" Description="{Binding SmartMemoryGovernorDescription}">
+                                <StackPanel Width="260" Margin="0,5,0,0">
+                                    <Grid Margin="0,0,0,6">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock
+                                            VerticalAlignment="Center"
+                                            Text="Safe RAM level"
+                                            Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            VerticalAlignment="Center"
+                                            Text="{Binding SmartMemoryGovernorLevelText}"
+                                            FontWeight="SemiBold"
+                                            Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
+                                    </Grid>
+                                    <Slider
+                                        Minimum="0"
+                                        Maximum="4"
+                                        TickFrequency="1"
+                                        IsSnapToTickEnabled="True"
+                                        TickPlacement="BottomRight"
+                                        Value="{Binding SmartMemoryGovernorLevel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <Grid Margin="0,4,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="Off" FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" />
+                                        <TextBlock Grid.Column="1" Text="Balanced" FontSize="11" HorizontalAlignment="Center" Foreground="{DynamicResource TextFillColorTertiaryBrush}" />
+                                        <TextBlock Grid.Column="2" Text="Bot Farm" FontSize="11" HorizontalAlignment="Right" Foreground="{DynamicResource TextFillColorTertiaryBrush}" />
+                                    </Grid>
+                                </StackPanel>
                             </controls:OptionControl>
 
-                            <controls:OptionControl Header="Optimize Roblox" Description="Optimizes Roblox based on your current CPU, GPU, and memory.">
-                            <ui:ToggleSwitch IsChecked="{Binding OptimizeRoblox, Mode=TwoWay}" />
-                        </controls:OptionControl>
-
-                            <controls:OptionControl
+                             <controls:OptionControl
     Header="Roblox Memory Cleaner"
-    Description="Select how often Roblox memory should be cleaned.">
+    Description="Legacy forced cleaner. It is skipped automatically while Smart RAM Governor is enabled.">
 
                                 <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
                                     <ComboBox
