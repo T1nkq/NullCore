@@ -3,9 +3,6 @@ using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Diagnostics;
-using System.IO;
-using System.Management;
 using System.Net.Http;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -255,129 +252,6 @@ namespace Voidstrap.UI.Elements.Settings.Pages
 
         private void OptionControl_Loaded_1(object sender, RoutedEventArgs e)
         {
-        }
-
-        private async void CheckSystemButton_Click(object sender, RoutedEventArgs e)
-        {
-            CheckSystemButton.IsEnabled = false;
-            SystemCheckProgress.Visibility = Visibility.Visible;
-            SystemCheckProgress.Value = 0;
-
-            string logFile = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                "SystemCheckLog.txt");
-
-            string configFolder = Path.Combine(Paths.Mods, "ClientSettings");
-            string configFile = Path.Combine(configFolder, "ClientAppSettings.json");
-            Directory.CreateDirectory(configFolder);
-
-            var ci = new Microsoft.VisualBasic.Devices.ComputerInfo();
-            double totalRamGb = Math.Round(ci.TotalPhysicalMemory / (1024.0 * 1024.0 * 1024.0), 2);
-            int cpuCores = Environment.ProcessorCount;
-
-            SystemCheckProgress.Value = 20;
-            await Task.Delay(350);
-
-            var tierFlags = new Dictionary<string, Dictionary<string, string>>
-            {
-                ["Low"] = new Dictionary<string, string>
-                {
-                    ["DFFlagDisableDPIScale"] = "True",
-                    ["DFFlagTextureQualityOverrideEnabled"] = "False",
-                    ["DFIntTextureQualityOverride"] = "1",
-                    ["DFIntCSGLevelOfDetailSwitchingDistance"] = "10",
-                    ["DFIntCSGLevelOfDetailSwitchingDistanceL12"] = "5",
-                    ["DFIntCSGLevelOfDetailSwitchingDistanceL23"] = "0",
-                    ["DFIntCSGLevelOfDetailSwitchingDistanceL34"] = "0",
-                    ["FIntGrassMovementReducedMotionFactor"] = "0"
-                },
-
-                ["Mid"] = new Dictionary<string, string>
-                {
-                    ["DFFlagDisableDPIScale"] = "True",
-                    ["DFFlagDebugPauseVoxelizer"] = "True",
-                    ["DFFlagTextureQualityOverrideEnabled"] = "True",
-                    ["DFIntTextureQualityOverride"] = "2",
-                    ["DFIntCSGLevelOfDetailSwitchingDistance"] = "20",
-                    ["DFIntCSGLevelOfDetailSwitchingDistanceL12"] = "10",
-                    ["DFIntCSGLevelOfDetailSwitchingDistanceL23"] = "5",
-                    ["DFIntCSGLevelOfDetailSwitchingDistanceL34"] = "0",
-                    ["FIntGrassMovementReducedMotionFactor"] = "50"
-                },
-
-                ["High"] = new Dictionary<string, string>
-                {
-                    ["DFFlagDisableDPIScale"] = "True",
-                    ["DFFlagTextureQualityOverrideEnabled"] = "True",
-                    ["DFIntTextureQualityOverride"] = "3",
-                    ["DFIntCSGLevelOfDetailSwitchingDistance"] = "30",
-                    ["DFIntCSGLevelOfDetailSwitchingDistanceL12"] = "15",
-                    ["DFIntCSGLevelOfDetailSwitchingDistanceL23"] = "10",
-                    ["DFIntCSGLevelOfDetailSwitchingDistanceL34"] = "5",
-                    ["FIntGrassMovementReducedMotionFactor"] = "75"
-                },
-
-                ["Ultra"] = new Dictionary<string, string>
-                {
-                    ["DFFlagDisableDPIScale"] = "True",
-                    ["DFFlagTextureQualityOverrideEnabled"] = "True",
-                    ["DFIntTextureQualityOverride"] = "4",
-                    ["DFIntCSGLevelOfDetailSwitchingDistance"] = "50",
-                    ["DFIntCSGLevelOfDetailSwitchingDistanceL12"] = "30",
-                    ["DFIntCSGLevelOfDetailSwitchingDistanceL23"] = "20",
-                    ["DFIntCSGLevelOfDetailSwitchingDistanceL34"] = "10",
-                    ["FIntGrassMovementReducedMotionFactor"] = "100"
-                }
-            };
-
-            SystemCheckProgress.Value = 40;
-            await Task.Delay(350);
-
-            string tier = "Mid";
-            if (totalRamGb < 4 || cpuCores <= 2)
-                tier = "Low";
-            else if (totalRamGb >= 16 && cpuCores >= 12)
-                tier = "Ultra";
-            else if (totalRamGb >= 12 && cpuCores >= 8)
-                tier = "High";
-
-            SystemCheckProgress.Value = 60;
-            await Task.Delay(350);
-
-            var flags = tierFlags.ContainsKey(tier) ? new Dictionary<string, string>(tierFlags[tier]) : new Dictionary<string, string>();
-
-            SystemCheckProgress.Value = 80;
-            await Task.Delay(350);
-
-            string json = System.Text.Json.JsonSerializer.Serialize(flags, new System.Text.Json.JsonSerializerOptions { WriteIndented = true });
-            await File.WriteAllTextAsync(configFile, json);
-
-            SystemCheckProgress.Value = 90;
-            await Task.Delay(350);
-
-            using (StreamWriter writer = new StreamWriter(logFile, false))
-            {
-                await writer.WriteLineAsync($"System Check Log - {DateTime.Now}");
-                await writer.WriteLineAsync($"Machine: {Environment.MachineName}");
-                await writer.WriteLineAsync($"OS: {Environment.OSVersion}");
-                await writer.WriteLineAsync($"CPU Cores: {cpuCores}");
-                await writer.WriteLineAsync($"RAM: {totalRamGb} GB");
-                await writer.WriteLineAsync($"Chosen Tier: {tier}");
-                await writer.WriteLineAsync($"FFlags written to: {configFile}");
-            }
-
-            SystemCheckProgress.Value = 100;
-            await Task.Delay(350);
-            Frontend.ShowMessageBox($"System check complete! Flags applied for {tier}-tier.\nConfig saved to: {configFile}\nLog saved to Documents.\nApp Restart is needed!", MessageBoxImage.Information);
-
-            string exePath = System.Diagnostics.Process.GetCurrentProcess().MainModule!.FileName!;
-            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
-            {
-                FileName = exePath,
-                UseShellExecute = true
-            });
-
-            Application.Current.Shutdown();
         }
     }
 }

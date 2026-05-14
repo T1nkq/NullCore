@@ -25,7 +25,6 @@ namespace Voidstrap.UI.Elements.Dialogs
 
             string notes = NormalizeReleaseNotes(release.Body);
             ReleaseNotesText.Text = notes;
-            ReleaseNotesText.MarkdownText = notes;
 
             Loaded += delegate
             {

@@ -309,7 +309,6 @@
                 <ui:NavigationFluent.Items>
                     <ui:NavigationItem Content="Core" IsEnabled="False" Opacity="0.6" />
                     <ui:NavigationItem Content="{x:Static resources:Strings.Menu_Integrations_Title}" Icon="Add12" Tag="Add16" PageType="{x:Type pages:IntegrationsPage}" />
-                    <ui:NavigationItem Content="Bots" Icon="Apps32" Tag="Apps24" PageType="{x:Type pages:BotsPage}" />
                     <ui:NavigationItem Content="Deployment" Icon="PlaySettings20" Tag="Play20" PageType="{x:Type pages:BehaviourPage}" />
                     <ui:NavigationSeparator />
                     <ui:NavigationItem Content="Configuration" IsEnabled="False" Opacity="0.6" />

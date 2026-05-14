@@ -11,8 +11,8 @@
 		<ApplicationIcon>Voidstrap.ico</ApplicationIcon>
 		<AssemblyName>NullCore</AssemblyName>
 		<Product>NullCore</Product>
-		<Version>1.1.0.11</Version>
-		<FileVersion>1.1.0.11</FileVersion>
+		<Version>1.1.0.12</Version>
+		<FileVersion>1.1.0.12</FileVersion>
 		<ApplicationManifest>app.manifest</ApplicationManifest>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<RootNamespace>Voidstrap</RootNamespace>

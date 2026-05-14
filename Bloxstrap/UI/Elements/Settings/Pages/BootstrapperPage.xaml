@@ -27,14 +27,6 @@
         <TabItem Header="General">
             <StackPanel Margin="10">
 
-                    <ui:InfoBar
-                    Margin="0,0,0,-1"
-                    Padding="4"
-                    IsClosable="True"
-                    IsOpen="True"
-                    Message="Features here are highly customizable but intended for advanced users."
-                    Severity="Informational" />
-
                     <controls:OptionControl 
                     x:Name="ConfirmLaunchOption"
                     Header="{x:Static resources:Strings.Menu_Behaviour_ConfirmLaunches_Title}" 
