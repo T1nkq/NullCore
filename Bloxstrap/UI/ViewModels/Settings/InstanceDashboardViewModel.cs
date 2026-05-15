@@ -1,6 +1,5 @@
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
-using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -14,18 +13,17 @@ namespace Voidstrap.UI.ViewModels.Settings
         private readonly Dictionary<int, ProcessSample> _samples = new();
         private RobloxInstanceViewModel? _selectedInstance;
         private bool _isAutoRefreshEnabled = true;
-        private string _monitoringStatusText = "Preparing monitor...";
+        private string _monitoringStatusText = "Подготовка монитора...";
         private string _totalMemoryText = "0 MB";
         private string _totalCpuText = "0.0%";
         private string _averageCpuText = "0.0%";
-        private string _heaviestInstanceText = "None";
-        private string _lastUpdatedText = "Waiting for refresh";
+        private string _heaviestInstanceText = "Нет";
+        private string _lastUpdatedText = "Ожидание обновления";
         private int _instanceCount;
 
         public ObservableCollection<RobloxInstanceViewModel> Instances { get; } = new();
 
         public ICommand RefreshCommand { get; }
-        public ICommand TrimSelectedMemoryCommand { get; }
         public ICommand EndSelectedCommand { get; }
         public ICommand OpenSelectedFolderCommand { get; }
         public ICommand CopySelectedInfoCommand { get; }
@@ -33,7 +31,6 @@ namespace Voidstrap.UI.ViewModels.Settings
         public InstanceDashboardViewModel()
         {
             RefreshCommand = new RelayCommand(RefreshInstances);
-            TrimSelectedMemoryCommand = new RelayCommand(TrimSelectedMemory);
             EndSelectedCommand = new RelayCommand(EndSelectedProcess);
             OpenSelectedFolderCommand = new RelayCommand(OpenSelectedFolder);
             CopySelectedInfoCommand = new RelayCommand(CopySelectedInfo);
@@ -78,7 +75,7 @@ namespace Voidstrap.UI.ViewModels.Settings
                 else
                 {
                     _refreshTimer.Stop();
-                    LastUpdatedText = $"{LastUpdatedText} | paused";
+                    LastUpdatedText = $"{LastUpdatedText} | пауза";
                 }
             }
         }
@@ -173,7 +170,7 @@ namespace Voidstrap.UI.ViewModels.Settings
             foreach (int pid in _samples.Keys.Where(pid => !activePids.Contains(pid)).ToList())
                 _samples.Remove(pid);
 
-            LastUpdatedText = $"Updated {DateTime.Now:HH:mm:ss} | {(IsAutoRefreshEnabled ? "auto refresh on" : "auto refresh off")}";
+            LastUpdatedText = $"Обновлено {DateTime.Now:HH:mm:ss} | {(IsAutoRefreshEnabled ? "автообновление включено" : "автообновление выключено")}";
         }
 
         public void Start()
@@ -213,7 +210,7 @@ namespace Voidstrap.UI.ViewModels.Settings
             long workingSet = Safe(() => process.WorkingSet64, 0L);
             long privateMemory = Safe(() => process.PrivateMemorySize64, 0L);
             bool responding = Safe(() => process.Responding, true);
-            string priority = Safe(() => process.PriorityClass.ToString(), "Unknown");
+            string priority = Safe(() => process.PriorityClass.ToString(), "Неизвестно");
             int threadCount = Safe(() => process.Threads.Count, 0);
 
             return new RobloxInstanceViewModel
@@ -221,7 +218,7 @@ namespace Voidstrap.UI.ViewModels.Settings
                 Pid = pid,
                 ProcessName = process.ProcessName,
                 DisplayName = string.IsNullOrWhiteSpace(windowTitle) ? process.ProcessName : windowTitle,
-                Status = responding ? "Running" : "Not responding",
+                Status = responding ? "Работает" : "Не отвечает",
                 StatusBrush = responding
                     ? new SolidColorBrush(Color.FromRgb(36, 138, 76))
                     : new SolidColorBrush(Color.FromRgb(172, 112, 28)),
@@ -230,11 +227,11 @@ namespace Voidstrap.UI.ViewModels.Settings
                 WorkingSetBytes = workingSet,
                 MemoryText = FormatBytes(workingSet),
                 PrivateMemoryText = FormatBytes(privateMemory),
-                UptimeText = startTime == DateTime.MinValue ? "Unknown" : FormatDuration(uptime),
-                StartedText = startTime == DateTime.MinValue ? "Unknown" : startTime.ToString("HH:mm:ss"),
+                UptimeText = startTime == DateTime.MinValue ? "Неизвестно" : FormatDuration(uptime),
+                StartedText = startTime == DateTime.MinValue ? "Неизвестно" : startTime.ToString("HH:mm:ss"),
                 StartedAtUtc = startTime == DateTime.MinValue ? DateTime.MinValue : startTime.ToUniversalTime(),
-                WindowTitle = string.IsNullOrWhiteSpace(windowTitle) ? "No visible title" : windowTitle,
-                ExecutablePath = string.IsNullOrWhiteSpace(processPath) ? "Unavailable" : processPath,
+                WindowTitle = string.IsNullOrWhiteSpace(windowTitle) ? "Без видимого заголовка" : windowTitle,
+                ExecutablePath = string.IsNullOrWhiteSpace(processPath) ? "Недоступно" : processPath,
                 PriorityText = priority,
                 ThreadCount = threadCount,
                 ProcessLabel = $"{process.ProcessName} / PID {pid}"
@@ -252,37 +249,12 @@ namespace Voidstrap.UI.ViewModels.Settings
 
             var heaviest = instances.OrderByDescending(instance => instance.WorkingSetBytes).FirstOrDefault();
             HeaviestInstanceText = heaviest is null
-                ? "None"
+                ? "Нет"
                 : $"PID {heaviest.Pid} / {heaviest.MemoryText}";
 
             MonitoringStatusText = instances.Count == 0
-                ? "No Roblox instances detected"
-                : $"{instances.Count} Roblox instance{(instances.Count == 1 ? string.Empty : "s")} online";
-        }
-
-        private void TrimSelectedMemory()
-        {
-            if (SelectedInstance is null)
-                return;
-
-            try
-            {
-                using var process = Process.GetProcessById(SelectedInstance.Pid);
-                long before = process.WorkingSet64;
-                EmptyWorkingSet(process.Handle);
-                SetProcessWorkingSetSize(process.Handle, (IntPtr)(-1), (IntPtr)(-1));
-                process.Refresh();
-
-                Frontend.ShowMessageBox(
-                    $"Memory trim completed for PID {SelectedInstance.Pid}.\n\nBefore: {FormatBytes(before)}\nAfter: {FormatBytes(process.WorkingSet64)}",
-                    MessageBoxImage.Information);
-
-                RefreshInstances();
-            }
-            catch (Exception ex)
-            {
-                Frontend.ShowMessageBox($"Failed to trim memory:\n{ex.Message}", MessageBoxImage.Warning);
-            }
+                ? "Roblox-инстансы не найдены"
+                : $"Онлайн Roblox-инстансов: {instances.Count}";
         }
 
         private void EndSelectedProcess()
@@ -291,7 +263,7 @@ namespace Voidstrap.UI.ViewModels.Settings
                 return;
 
             var result = Frontend.ShowMessageBox(
-                $"End Roblox process PID {SelectedInstance.Pid}?\n\nThis will close that instance immediately.",
+                $"Завершить Roblox-процесс PID {SelectedInstance.Pid}?\n\nЭтот инстанс будет закрыт сразу.",
                 MessageBoxImage.Warning,
                 MessageBoxButton.YesNo,
                 MessageBoxResult.No);
@@ -308,7 +280,7 @@ namespace Voidstrap.UI.ViewModels.Settings
             }
             catch (Exception ex)
             {
-                Frontend.ShowMessageBox($"Failed to end process:\n{ex.Message}", MessageBoxImage.Warning);
+                Frontend.ShowMessageBox($"Не удалось завершить процесс:\n{ex.Message}", MessageBoxImage.Warning);
             }
         }
 
@@ -316,7 +288,7 @@ namespace Voidstrap.UI.ViewModels.Settings
         {
             if (SelectedInstance is null || !File.Exists(SelectedInstance.ExecutablePath))
             {
-                Frontend.ShowMessageBox("Executable path is not available for this process.", MessageBoxImage.Information);
+                Frontend.ShowMessageBox("Путь к исполняемому файлу недоступен для этого процесса.", MessageBoxImage.Information);
                 return;
             }
 
@@ -419,15 +391,15 @@ namespace Voidstrap.UI.ViewModels.Settings
         private static string FormatDuration(TimeSpan duration)
         {
             if (duration.TotalDays >= 1)
-                return $"{(int)duration.TotalDays}d {duration.Hours}h";
+                return $"{(int)duration.TotalDays}д {duration.Hours}ч";
 
             if (duration.TotalHours >= 1)
-                return $"{(int)duration.TotalHours}h {duration.Minutes}m";
+                return $"{(int)duration.TotalHours}ч {duration.Minutes}м";
 
             if (duration.TotalMinutes >= 1)
-                return $"{(int)duration.TotalMinutes}m {duration.Seconds}s";
+                return $"{(int)duration.TotalMinutes}м {duration.Seconds}с";
 
-            return $"{Math.Max(0, duration.Seconds)}s";
+            return $"{Math.Max(0, duration.Seconds)}с";
         }
 
         private static string FormatBytes(long bytes)
@@ -450,12 +422,6 @@ namespace Voidstrap.UI.ViewModels.Settings
             _refreshTimer.Tick -= RefreshTimer_Tick;
         }
 
-        [DllImport("psapi.dll")]
-        private static extern bool EmptyWorkingSet(IntPtr hProcess);
-
-        [DllImport("kernel32.dll")]
-        private static extern bool SetProcessWorkingSetSize(IntPtr hProcess, IntPtr minimumWorkingSetSize, IntPtr maximumWorkingSetSize);
-
         private sealed record ProcessSample(DateTime TimestampUtc, TimeSpan TotalProcessorTime);
     }
 
@@ -472,12 +438,12 @@ namespace Voidstrap.UI.ViewModels.Settings
         public long WorkingSetBytes { get; init; }
         public string MemoryText { get; init; } = "0 MB";
         public string PrivateMemoryText { get; init; } = "0 MB";
-        public string UptimeText { get; init; } = "Unknown";
-        public string StartedText { get; init; } = "Unknown";
+        public string UptimeText { get; init; } = "Неизвестно";
+        public string StartedText { get; init; } = "Неизвестно";
         public DateTime StartedAtUtc { get; init; }
         public string WindowTitle { get; init; } = string.Empty;
         public string ExecutablePath { get; init; } = string.Empty;
-        public string PriorityText { get; init; } = "Unknown";
+        public string PriorityText { get; init; } = "Неизвестно";
         public int ThreadCount { get; init; }
     }
 }

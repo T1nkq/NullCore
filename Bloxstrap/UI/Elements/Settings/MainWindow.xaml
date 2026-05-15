@@ -17,13 +17,13 @@
     MinWidth="1071"
     MinHeight="690"
     d:DataContext="{d:DesignInstance dmodels:MainWindowViewModel, IsDesignTimeCreatable=True}"
-    AllowsTransparency="True"
+    AllowsTransparency="False"
     WindowStyle="None"
-    Background="Transparent"
+    Background="#FF070A0E"
     Closed="WpfUiWindow_Closed"
     Closing="WpfUiWindow_Closing"
     ExtendsContentIntoTitleBar="True"
-    WindowBackdropType="Aero"
+    WindowBackdropType="Disable"
     WindowStartupLocation="CenterScreen"
     Loaded="MainWindow_Loaded"
     UseLayoutRounding="True"
@@ -34,6 +34,22 @@
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <BitmapImage x:Key="AppIconImage"
                      UriSource="pack://application:,,,/Voidstrap.ico" />
+        <SolidColorBrush x:Key="NullCoreShellBrush" Color="#F0090D12" />
+        <SolidColorBrush x:Key="NullCorePanelBrush" Color="#E812171E" />
+        <SolidColorBrush x:Key="NullCorePanelAltBrush" Color="#D91A222B" />
+        <SolidColorBrush x:Key="NullCoreStrokeBrush" Color="#336EE7C8" />
+        <SolidColorBrush x:Key="NullCoreStrokeMutedBrush" Color="#243A4654" />
+        <SolidColorBrush x:Key="NullCoreAccentBrush" Color="#FF6EE7C8" />
+        <SolidColorBrush x:Key="NullCoreCyanBrush" Color="#FF7CB8FF" />
+        <SolidColorBrush x:Key="NullCoreWarningBrush" Color="#FFFFC857" />
+        <Style x:Key="NullCoreHeaderTextStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+        <Style x:Key="NullCoreMetaTextStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}" />
+            <Setter Property="FontSize" Value="12" />
+        </Style>
         <media:CubicEase x:Key="SmoothEaseOut" EasingMode="EaseOut" />
         <media:QuinticEase x:Key="UltraSmoothEaseOut" EasingMode="EaseOut" />
         <LinearGradientBrush x:Key="LightningBrush"
@@ -114,7 +130,7 @@
         </Storyboard>
     </base:WpfUiWindow.Resources>
 
-    <Grid>
+    <Grid Background="#FF070A0E">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -128,7 +144,7 @@
 
             <MediaElement x:Name="BackgroundMedia"
                   Stretch="UniformToFill"
-                  Opacity="1"
+                  Opacity="0"
                   IsHitTestVisible="False"
                   LoadedBehavior="Manual"
                   UnloadedBehavior="Stop"
@@ -136,10 +152,10 @@
 
             <Image x:Name="BackgroundImage"
            Stretch="UniformToFill"
-           Opacity="1"
+           Opacity="0"
            RenderOptions.BitmapScalingMode="HighQuality"
            IsHitTestVisible="False"
-           Visibility="Visible"/>
+           Visibility="Collapsed"/>
 
             <Border x:Name="GradientLayer">
                 <Border.Background>
@@ -155,10 +171,9 @@
                             </TransformGroup>
                         </LinearGradientBrush.RelativeTransform>
 
-                        <GradientStop Offset="0.0" Color="{DynamicResource WindowBackgroundColorPrimary}" />
-                        <GradientStop Offset="0.35" Color="{DynamicResource WindowBackgroundColorSecondary}" />
-                        <GradientStop Offset="0.75" Color="{DynamicResource WindowBackgroundColorThird}" />
-                        <GradientStop Offset="1.0" Color="{DynamicResource WindowBackgroundColorPrimary}" />
+                        <GradientStop Offset="0.0" Color="#FF070A0E" />
+                        <GradientStop Offset="0.45" Color="#FF090E14" />
+                        <GradientStop Offset="1.0" Color="#FF05070A" />
                     </LinearGradientBrush>
                 </Border.Background>
             </Border>
@@ -167,6 +182,7 @@
         <Canvas x:Name="SnowCanvas"
                 Grid.RowSpan="3"
                 IsHitTestVisible="False"
+                Visibility="Collapsed"
                 Panel.ZIndex="0" />
 
 
@@ -305,7 +321,28 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <ui:NavigationFluent x:Name="RootNavigation" Grid.Row="1" Grid.Column="0" Margin="0,0,5,0" Frame="{Binding ElementName=RootFrame}" SelectedPageIndex="0">
+            <Border
+                Grid.Row="0"
+                Grid.RowSpan="2"
+                Grid.ColumnSpan="2"
+                Margin="0,0,8,0"
+                Background="{StaticResource NullCoreShellBrush}"
+                BorderBrush="{StaticResource NullCoreStrokeMutedBrush}"
+                BorderThickness="1"
+                CornerRadius="10" />
+
+            <ui:NavigationFluent
+                x:Name="RootNavigation"
+                Grid.Row="1"
+                Grid.Column="0"
+                Width="222"
+                Margin="8,6,6,10"
+                Padding="8,8,8,10"
+                Background="{StaticResource NullCorePanelBrush}"
+                BorderBrush="{StaticResource NullCoreStrokeMutedBrush}"
+                BorderThickness="1"
+                Frame="{Binding ElementName=RootFrame}"
+                SelectedPageIndex="0">
                 <ui:NavigationFluent.Items>
                     <ui:NavigationItem Content="Core" IsEnabled="False" Opacity="0.6" />
                     <ui:NavigationItem Content="Dashboard" Icon="DesktopPulse24" Tag="DesktopPulse32" PageType="{x:Type pages:InstanceDashboardPage}" />
@@ -329,57 +366,146 @@
                 </ui:NavigationFluent.Footer>
             </ui:NavigationFluent>
 
-            <Grid Grid.Row="0" Grid.RowSpan="3" Grid.Column="1">
+            <Grid Grid.Row="0" Grid.RowSpan="3" Grid.Column="1" Margin="0,6,16,10">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <Grid Grid.Row="0" Margin="0,0,0,5">
+                <Border
+                    Grid.RowSpan="2"
+                    Background="{StaticResource NullCorePanelBrush}"
+                    BorderBrush="{StaticResource NullCoreStrokeMutedBrush}"
+                    BorderThickness="1"
+                    CornerRadius="10" />
+
+                <Grid Grid.Row="0" Margin="14,12,14,10">
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
-                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
-                        <ui:SymbolIcon x:Name="BreadcrumbIcon" Symbol="Add12"
-                   FontSize="23"
-                   Margin="0,4,6,0"
-                   VerticalAlignment="Center" />
-                        <ui:Breadcrumb Navigation="{Binding ElementName=RootNavigation}" />
+                    <Border
+                        Width="42"
+                        Height="42"
+                        Margin="0,0,12,0"
+                        Background="{StaticResource NullCorePanelAltBrush}"
+                        BorderBrush="{StaticResource NullCoreStrokeBrush}"
+                        BorderThickness="1"
+                        CornerRadius="8">
+                        <Image
+                            Width="24"
+                            Height="24"
+                            Source="{StaticResource AppIconImage}"
+                            RenderOptions.BitmapScalingMode="HighQuality" />
+                    </Border>
+
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="NullCore" FontSize="20" Style="{StaticResource NullCoreHeaderTextStyle}" />
+                            <Border
+                                Margin="10,1,0,0"
+                                Padding="8,3"
+                                VerticalAlignment="Center"
+                                Background="#1811161D"
+                                BorderBrush="{Binding NetworkStatusBrush}"
+                                BorderThickness="1"
+                                CornerRadius="5">
+                                <StackPanel Orientation="Horizontal">
+                                    <Grid Width="12" Height="12" Margin="0,0,6,0" VerticalAlignment="Center">
+                                        <Ellipse Fill="{Binding NetworkStatusBrush}" Opacity="0.2">
+                                            <Ellipse.Triggers>
+                                                <EventTrigger RoutedEvent="Loaded">
+                                                    <BeginStoryboard>
+                                                        <Storyboard RepeatBehavior="Forever" AutoReverse="True">
+                                                            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0.15" To="0.55" Duration="0:0:1.2" />
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </EventTrigger>
+                                            </Ellipse.Triggers>
+                                        </Ellipse>
+                                        <Ellipse Width="6" Height="6" Fill="{Binding NetworkStatusBrush}" />
+                                    </Grid>
+                                    <TextBlock
+                                        Text="{Binding NetworkStatusText}"
+                                        FontSize="11"
+                                        FontWeight="SemiBold"
+                                        Foreground="{Binding NetworkStatusBrush}" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                            <ui:SymbolIcon
+                                x:Name="BreadcrumbIcon"
+                                Symbol="Add12"
+                                FontSize="16"
+                                Margin="0,1,6,0"
+                                VerticalAlignment="Center"
+                                Foreground="{StaticResource NullCoreCyanBrush}" />
+                            <ui:Breadcrumb Navigation="{Binding ElementName=RootNavigation}" />
+                        </StackPanel>
                     </StackPanel>
 
-                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
                         <ui:TextBox x:Name="GlobalSearchBox"
-                Margin="0,0,6,0"
-                HorizontalAlignment="Right"
-                PlaceholderText="Search..."
-                TextChanged="GlobalSearchBox_TextChanged"
-                ClearButtonEnabled="True"
-                Icon="Search24"
-                Visibility="{Binding ShowSearchBox, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            Width="240"
+                            Margin="0,0,8,0"
+                            HorizontalAlignment="Right"
+                            PlaceholderText="Search..."
+                            TextChanged="GlobalSearchBox_TextChanged"
+                            ClearButtonEnabled="True"
+                            Icon="Search24"
+                            Visibility="{Binding ShowSearchBox, Converter={StaticResource BoolToVisibilityConverter}}" />
                     </StackPanel>
 
-                    <ui:InfoBar Margin="0,0,28,0"
-                    Grid.Column="2"
-                    HorizontalAlignment="Right"
-                    Padding="3"
-                    IsClosable="True"
-                    IsOpen="True"
-                    Severity="Informational"
-                    Message="{Binding AppVersion}"/>
+                    <ui:Button
+                        Grid.Column="3"
+                        MinWidth="128"
+                        Margin="0"
+                        Padding="8,5"
+                        HorizontalAlignment="Right"
+                        Appearance="Secondary"
+                        Background="#FF111820"
+                        BorderBrush="{Binding UpdateStatusBrush}"
+                        Command="{Binding CheckUpdateCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <Border
+                                Width="22"
+                                Height="22"
+                                Margin="0,0,8,0"
+                                Background="#08000000"
+                                BorderBrush="{Binding UpdateStatusBrush}"
+                                BorderThickness="1"
+                                CornerRadius="4">
+                                <ui:SymbolIcon
+                                    FontSize="13"
+                                    Symbol="{Binding UpdateStatusIcon}"
+                                    Foreground="{Binding UpdateStatusBrush}" />
+                            </Border>
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                FontSize="12"
+                                FontWeight="SemiBold"
+                                Text="{Binding UpdateStatusText}"
+                                Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
+                        </StackPanel>
+                    </ui:Button>
 
                 </Grid>
-                <Frame x:Name="RootFrame" Grid.Row="1"/>
+                <Frame x:Name="RootFrame" Grid.Row="1" Margin="14,0,14,14" NavigationUIVisibility="Hidden"/>
             </Grid>
         </Grid>
 
         <Border Grid.Row="2"
                 VerticalAlignment="Bottom"
-                Height="52"
-                Background="{ui:ThemeResource ControlFillColorDefaultBrush}"
-                CornerRadius="12,12,0,0"
+                Height="58"
+                Margin="8,0,8,8"
+                Background="{StaticResource NullCoreShellBrush}"
+                BorderBrush="{StaticResource NullCoreStrokeMutedBrush}"
+                BorderThickness="1"
+                CornerRadius="10"
                 Padding="16,0">
 
             <StatusBar x:Name="RootStatusBar"
@@ -411,7 +537,8 @@
                                          IsChecked="{Binding TestModeEnabled, Mode=TwoWay}" />
                         <TextBlock Padding="10,0,0,0"
                                    VerticalAlignment="Center"
-                                   FontSize="14"
+                                   FontSize="13"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                    Text="{x:Static resources:Strings.Menu_TestMode}" />
 
                     </StackPanel>
@@ -419,24 +546,27 @@
 
                 <StatusBarItem Grid.Column="2" Padding="0,0,8,0">
                     <ui:Button x:Name="InstallLaunchButton"
+                               MinWidth="126"
                                HorizontalAlignment="Center"
                                Appearance="Primary"
-                               Background="{DynamicResource SystemAccentBrush}"
+                               Background="{StaticResource NullCoreAccentBrush}"
                                Command="{Binding SaveAndLaunchSettingsCommand, Mode=OneWay}"
-                               Content="Install" />
+                               Content="{x:Static resources:Strings.Menu_SaveAndLaunch}" />
                 </StatusBarItem>
 
                 <StatusBarItem Grid.Column="3" Padding="0,0,9,0">
-                    <ui:Button Width="56.587"
+                    <ui:Button MinWidth="92"
+                               Padding="14,0"
                                Appearance="Primary"
-                               Background="{DynamicResource SystemAccentBrush}"
+                               Background="{StaticResource NullCoreCyanBrush}"
                                Click="Button_Click_1"
                                Command="{Binding SaveSettingsCommand, Mode=OneWay}"
                                Content="{x:Static resources:Strings.Menu_Save}" />
                 </StatusBarItem>
 
                 <StatusBarItem Grid.Column="4" Padding="0,0,8,0">
-                    <ui:Button Width="56.587"
+                    <ui:Button MinWidth="92"
+                               Padding="14,0"
                                HorizontalAlignment="Center"
                                Appearance="Secondary"
                                Command="{Binding CloseWindowCommand, Mode=OneTime}"

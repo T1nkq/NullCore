@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:settings="clr-namespace:Voidstrap.UI.ViewModels.Settings"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-    Title="Instance Dashboard"
+    Title="Панель инстансов"
     d:DataContext="{d:DesignInstance Type=settings:InstanceDashboardViewModel}"
     d:DesignHeight="900"
     d:DesignWidth="900"
@@ -17,15 +17,21 @@
     <ui:UiPage.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
         <conv:InvertBooleanToVisibilityConverter x:Key="InvertBoolToVis" />
+        <SolidColorBrush x:Key="DashboardPanelBrush" Color="#E80F141A" />
+        <SolidColorBrush x:Key="DashboardPanelAltBrush" Color="#D9182028" />
+        <SolidColorBrush x:Key="DashboardStrokeBrush" Color="#336EE7C8" />
+        <SolidColorBrush x:Key="DashboardStrokeMutedBrush" Color="#283D4856" />
+        <SolidColorBrush x:Key="DashboardAccentBrush" Color="#FF6EE7C8" />
+        <SolidColorBrush x:Key="DashboardCyanBrush" Color="#FF7CB8FF" />
 
         <Style x:Key="MetricTileStyle" TargetType="Border">
             <Setter Property="Padding" Value="14" />
             <Setter Property="Margin" Value="0,0,8,0" />
             <Setter Property="MinHeight" Value="92" />
-            <Setter Property="Background" Value="{DynamicResource CardBackgroundFillColorDefaultBrush}" />
-            <Setter Property="BorderBrush" Value="{DynamicResource ControlStrokeColorDefaultBrush}" />
+            <Setter Property="Background" Value="{StaticResource DashboardPanelAltBrush}" />
+            <Setter Property="BorderBrush" Value="{StaticResource DashboardStrokeMutedBrush}" />
             <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="CornerRadius" Value="7" />
         </Style>
 
         <Style x:Key="MetricLabelStyle" TargetType="TextBlock">
@@ -48,46 +54,70 @@
         </Style>
     </ui:UiPage.Resources>
 
-    <StackPanel Margin="0,0,14,18">
-        <Grid Margin="0,0,0,14">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
+    <StackPanel Margin="0,0,0,18">
+        <Border
+            Margin="0,0,0,14"
+            Padding="16"
+            Background="{StaticResource DashboardPanelBrush}"
+            BorderBrush="{StaticResource DashboardStrokeMutedBrush}"
+            BorderThickness="1"
+            CornerRadius="8">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
 
-            <StackPanel>
-                <TextBlock
-                    Text="Instance Dashboard"
-                    FontSize="24"
-                    FontWeight="SemiBold"
-                    Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
-                <TextBlock
-                    Margin="0,4,0,0"
-                    Text="{Binding MonitoringStatusText}"
-                    FontSize="13"
-                    Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                <TextBlock
-                    Margin="0,2,0,0"
-                    Text="{Binding LastUpdatedText}"
-                    FontSize="12"
-                    Foreground="{DynamicResource TextFillColorTertiaryBrush}" />
-            </StackPanel>
-
-            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Top">
-                <StackPanel Margin="0,0,12,0" Orientation="Horizontal" VerticalAlignment="Center">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock
+                            Text="Панель инстансов"
+                            FontSize="24"
+                            FontWeight="SemiBold"
+                            Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
+                        <Border
+                            Margin="10,3,0,0"
+                            Padding="8,3"
+                            VerticalAlignment="Top"
+                            Background="#1E7CB8FF"
+                            BorderBrush="{StaticResource DashboardStrokeBrush}"
+                            BorderThickness="1"
+                            CornerRadius="5">
+                            <TextBlock
+                                Text="Live"
+                                FontSize="11"
+                                FontWeight="SemiBold"
+                                Foreground="{StaticResource DashboardCyanBrush}" />
+                        </Border>
+                    </StackPanel>
                     <TextBlock
-                        Margin="0,0,8,0"
-                        VerticalAlignment="Center"
-                        Text="Auto"
+                        Margin="0,5,0,0"
+                        Text="{Binding MonitoringStatusText}"
+                        FontSize="13"
                         Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
-                    <ui:ToggleSwitch IsChecked="{Binding IsAutoRefreshEnabled, Mode=TwoWay}" />
+                    <TextBlock
+                        Margin="0,2,0,0"
+                        Text="{Binding LastUpdatedText}"
+                        FontSize="12"
+                        Foreground="{DynamicResource TextFillColorTertiaryBrush}" />
                 </StackPanel>
-                <ui:Button
-                    Content="Refresh"
-                    Icon="ArrowClockwise24"
-                    Command="{Binding RefreshCommand}" />
-            </StackPanel>
-        </Grid>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Top">
+                    <StackPanel Margin="0,0,12,0" Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock
+                            Margin="0,0,8,0"
+                            VerticalAlignment="Center"
+                            Text="Авто"
+                            Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                        <ui:ToggleSwitch IsChecked="{Binding IsAutoRefreshEnabled, Mode=TwoWay}" />
+                    </StackPanel>
+                    <ui:Button
+                        Content="Обновить"
+                        Icon="ArrowClockwise24"
+                        Command="{Binding RefreshCommand}" />
+                </StackPanel>
+            </Grid>
+        </Border>
 
         <Grid Margin="0,0,0,14">
             <Grid.ColumnDefinitions>
@@ -101,10 +131,10 @@
                 <StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <ui:SymbolIcon Margin="0,0,6,0" Symbol="WindowMultiple20" />
-                        <TextBlock Style="{StaticResource MetricLabelStyle}" Text="Instances" />
+                        <TextBlock Style="{StaticResource MetricLabelStyle}" Text="Окна" />
                     </StackPanel>
                     <TextBlock Style="{StaticResource MetricValueStyle}" Text="{Binding InstanceCount}" />
-                    <TextBlock Style="{StaticResource MutedTextStyle}" Text="Detected Roblox clients" />
+                    <TextBlock Style="{StaticResource MutedTextStyle}" Text="Найденные Roblox-клиенты" />
                 </StackPanel>
             </Border>
 
@@ -112,10 +142,10 @@
                 <StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <ui:SymbolIcon Margin="0,0,6,0" Symbol="Database20" />
-                        <TextBlock Style="{StaticResource MetricLabelStyle}" Text="Total RAM" />
+                        <TextBlock Style="{StaticResource MetricLabelStyle}" Text="RAM всего" />
                     </StackPanel>
                     <TextBlock Style="{StaticResource MetricValueStyle}" Text="{Binding TotalMemoryText}" />
-                    <TextBlock Style="{StaticResource MutedTextStyle}" Text="Working set total" />
+                    <TextBlock Style="{StaticResource MutedTextStyle}" Text="Суммарная рабочая память" />
                 </StackPanel>
             </Border>
 
@@ -123,10 +153,10 @@
                 <StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <ui:SymbolIcon Margin="0,0,6,0" Symbol="Pulse20" />
-                        <TextBlock Style="{StaticResource MetricLabelStyle}" Text="Total CPU" />
+                        <TextBlock Style="{StaticResource MetricLabelStyle}" Text="CPU всего" />
                     </StackPanel>
                     <TextBlock Style="{StaticResource MetricValueStyle}" Text="{Binding TotalCpuText}" />
-                    <TextBlock Style="{StaticResource MutedTextStyle}" Text="{Binding AverageCpuText, StringFormat={}Avg per instance: {0}}" />
+                    <TextBlock Style="{StaticResource MutedTextStyle}" Text="{Binding AverageCpuText, StringFormat={}В среднем на окно: {0}}" />
                 </StackPanel>
             </Border>
 
@@ -134,10 +164,10 @@
                 <StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <ui:SymbolIcon Margin="0,0,6,0" Symbol="Gauge20" />
-                        <TextBlock Style="{StaticResource MetricLabelStyle}" Text="Heaviest" />
+                        <TextBlock Style="{StaticResource MetricLabelStyle}" Text="Самый тяжелый" />
                     </StackPanel>
                     <TextBlock Style="{StaticResource MetricValueStyle}" Text="{Binding HeaviestInstanceText}" />
-                    <TextBlock Style="{StaticResource MutedTextStyle}" Text="Highest RAM process" />
+                    <TextBlock Style="{StaticResource MutedTextStyle}" Text="Процесс с самой высокой RAM" />
                 </StackPanel>
             </Border>
         </Grid>
@@ -145,10 +175,10 @@
         <Border
             Margin="0,0,0,14"
             Padding="14"
-            Background="{DynamicResource ControlFillColorSecondaryBrush}"
-            BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
+            Background="{StaticResource DashboardPanelAltBrush}"
+            BorderBrush="{StaticResource DashboardStrokeMutedBrush}"
             BorderThickness="1"
-            CornerRadius="8"
+            CornerRadius="7"
             Visibility="{Binding HasInstances, Converter={StaticResource InvertBoolToVis}}">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -162,13 +192,13 @@
                     Symbol="DesktopPulse24" />
                 <StackPanel Grid.Column="1">
                     <TextBlock
-                        Text="No Roblox instances are running"
+                        Text="Roblox-инстансы не запущены"
                         FontSize="15"
                         FontWeight="SemiBold"
                         Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
                     <TextBlock
                         Margin="0,4,0,0"
-                        Text="Launch Roblox, then this dashboard will start showing process health, memory usage, CPU load, uptime, and controls for each live client."
+                        Text="Запусти Roblox, и здесь появятся состояние процесса, расход памяти, нагрузка CPU, аптайм и быстрые действия для каждого живого клиента."
                         Style="{StaticResource MutedTextStyle}" />
                 </StackPanel>
             </Grid>
@@ -184,10 +214,10 @@
             <Border
                 Grid.Column="0"
                 Padding="1"
-                Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
-                BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
+                Background="{StaticResource DashboardPanelBrush}"
+                BorderBrush="{StaticResource DashboardStrokeMutedBrush}"
                 BorderThickness="1"
-                CornerRadius="8">
+                CornerRadius="7">
                 <DataGrid
                     ItemsSource="{Binding Instances}"
                     SelectedItem="{Binding SelectedInstance, Mode=TwoWay}"
@@ -203,16 +233,16 @@
                     MaxHeight="430"
                     BorderThickness="0"
                     Background="Transparent"
-                    AlternatingRowBackground="{DynamicResource ControlFillColorSecondaryBrush}"
+                    AlternatingRowBackground="{StaticResource DashboardPanelAltBrush}"
                     ScrollViewer.VerticalScrollBarVisibility="Auto"
                     ScrollViewer.HorizontalScrollBarVisibility="Auto">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="PID" Binding="{Binding Pid}" Width="70" />
-                        <DataGridTextColumn Header="Process" Binding="{Binding ProcessName}" Width="140" />
+                        <DataGridTextColumn Header="Процесс" Binding="{Binding ProcessName}" Width="140" />
                         <DataGridTextColumn Header="RAM" Binding="{Binding MemoryText}" Width="90" />
                         <DataGridTextColumn Header="CPU" Binding="{Binding CpuText}" Width="70" />
-                        <DataGridTextColumn Header="Uptime" Binding="{Binding UptimeText}" Width="90" />
-                        <DataGridTemplateColumn Header="Status" Width="130">
+                        <DataGridTextColumn Header="Аптайм" Binding="{Binding UptimeText}" Width="90" />
+                        <DataGridTemplateColumn Header="Статус" Width="130">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Border
@@ -229,7 +259,7 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTextColumn Header="Window" Binding="{Binding WindowTitle}" Width="220" />
+                        <DataGridTextColumn Header="Окно" Binding="{Binding WindowTitle}" Width="220" />
                     </DataGrid.Columns>
                 </DataGrid>
             </Border>
@@ -237,19 +267,19 @@
             <Border
                 Grid.Column="2"
                 Padding="14"
-                Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
-                BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
+                Background="{StaticResource DashboardPanelBrush}"
+                BorderBrush="{StaticResource DashboardStrokeMutedBrush}"
                 BorderThickness="1"
-                CornerRadius="8">
+                CornerRadius="7">
                 <StackPanel>
                     <TextBlock
-                        Text="Selected Instance"
+                        Text="Выбранный инстанс"
                         FontSize="16"
                         FontWeight="SemiBold"
                         Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
                     <TextBlock
                         Margin="0,3,0,14"
-                        Text="{Binding SelectedInstance.ProcessLabel, TargetNullValue='No instance selected'}"
+                        Text="{Binding SelectedInstance.ProcessLabel, TargetNullValue='Инстанс не выбран'}"
                         Style="{StaticResource MutedTextStyle}" />
 
                     <Grid Margin="0,0,0,12">
@@ -269,26 +299,26 @@
                         <TextBlock Grid.Row="0" Grid.Column="0" Margin="0,0,12,7" Text="RAM" Style="{StaticResource MetricLabelStyle}" />
                         <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding SelectedInstance.MemoryText, TargetNullValue=-}" Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
 
-                        <TextBlock Grid.Row="1" Grid.Column="0" Margin="0,0,12,7" Text="Private" Style="{StaticResource MetricLabelStyle}" />
+                        <TextBlock Grid.Row="1" Grid.Column="0" Margin="0,0,12,7" Text="Private RAM" Style="{StaticResource MetricLabelStyle}" />
                         <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SelectedInstance.PrivateMemoryText, TargetNullValue=-}" Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
 
                         <TextBlock Grid.Row="2" Grid.Column="0" Margin="0,0,12,7" Text="CPU" Style="{StaticResource MetricLabelStyle}" />
                         <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding SelectedInstance.CpuText, TargetNullValue=-}" Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
 
-                        <TextBlock Grid.Row="3" Grid.Column="0" Margin="0,0,12,7" Text="Started" Style="{StaticResource MetricLabelStyle}" />
+                        <TextBlock Grid.Row="3" Grid.Column="0" Margin="0,0,12,7" Text="Запущен" Style="{StaticResource MetricLabelStyle}" />
                         <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding SelectedInstance.StartedText, TargetNullValue=-}" Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
 
-                        <TextBlock Grid.Row="4" Grid.Column="0" Margin="0,0,12,7" Text="Priority" Style="{StaticResource MetricLabelStyle}" />
+                        <TextBlock Grid.Row="4" Grid.Column="0" Margin="0,0,12,7" Text="Приоритет" Style="{StaticResource MetricLabelStyle}" />
                         <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding SelectedInstance.PriorityText, TargetNullValue=-}" Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
 
-                        <TextBlock Grid.Row="5" Grid.Column="0" Margin="0,0,12,0" Text="Threads" Style="{StaticResource MetricLabelStyle}" />
+                        <TextBlock Grid.Row="5" Grid.Column="0" Margin="0,0,12,0" Text="Потоки" Style="{StaticResource MetricLabelStyle}" />
                         <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding SelectedInstance.ThreadCount, TargetNullValue=-}" Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
                     </Grid>
 
-                    <TextBlock Text="Executable" Style="{StaticResource MetricLabelStyle}" />
+                    <TextBlock Text="Исполняемый файл" Style="{StaticResource MetricLabelStyle}" />
                     <TextBlock
                         Margin="0,4,0,14"
-                        Text="{Binding SelectedInstance.ExecutablePath, TargetNullValue=Unavailable}"
+                        Text="{Binding SelectedInstance.ExecutablePath, TargetNullValue=Недоступно}"
                         TextWrapping="Wrap"
                         Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
 
@@ -306,33 +336,25 @@
                         <ui:Button
                             Grid.Row="0"
                             Grid.Column="0"
-                            Content="Trim RAM"
-                            Icon="Pulse24"
-                            HorizontalAlignment="Stretch"
-                            IsEnabled="{Binding HasSelectedInstance}"
-                            Command="{Binding TrimSelectedMemoryCommand}" />
-                        <ui:Button
-                            Grid.Row="0"
-                            Grid.Column="2"
-                            Content="Copy"
+                            Content="Копировать"
                             Icon="Copy24"
                             HorizontalAlignment="Stretch"
                             IsEnabled="{Binding HasSelectedInstance}"
                             Command="{Binding CopySelectedInfoCommand}" />
                         <ui:Button
-                            Grid.Row="1"
-                            Grid.Column="0"
-                            Margin="0,8,0,0"
-                            Content="Folder"
+                            Grid.Row="0"
+                            Grid.Column="2"
+                            Content="Папка"
                             Icon="FolderOpen24"
                             HorizontalAlignment="Stretch"
                             IsEnabled="{Binding HasSelectedInstance}"
                             Command="{Binding OpenSelectedFolderCommand}" />
                         <ui:Button
                             Grid.Row="1"
-                            Grid.Column="2"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="3"
                             Margin="0,8,0,0"
-                            Content="End"
+                            Content="Завершить"
                             Icon="Stop24"
                             Appearance="Danger"
                             HorizontalAlignment="Stretch"

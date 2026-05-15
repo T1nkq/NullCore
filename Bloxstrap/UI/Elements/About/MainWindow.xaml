@@ -9,24 +9,21 @@
     xmlns:resources="clr-namespace:Voidstrap.Resources"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     Title="{x:Static resources:Strings.About_Title}"
-    Width="800"
-    Height="500"
-    MinWidth="850"
-    Background="{ui:ThemeResource ApplicationBackgroundBrush}"
-    BorderBrush="{DynamicResource SystemAccentBrush}"
-    BorderThickness="2"
+    Width="860"
+    Height="560"
+    MinWidth="860"
+    MinHeight="540"
+    Background="#FF070A0E"
+    BorderBrush="#243A4654"
+    BorderThickness="1"
     ExtendsContentIntoTitleBar="True"
-    WindowBackdropType="Mica"
+    WindowBackdropType="Disable"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
 
     <Grid>
         <Grid.Background>
-            <LinearGradientBrush StartPoint="1,1" EndPoint="0,0">
-                <GradientStop Offset="0.00" Color="{DynamicResource WindowBackgroundColorPrimary}" />
-                <GradientStop Offset="0.70" Color="{DynamicResource WindowBackgroundColorSecondary}" />
-                <GradientStop Offset="1.00" Color="{DynamicResource WindowBackgroundColorThird}" />
-            </LinearGradientBrush>
+            <SolidColorBrush Color="#FF070A0E" />
         </Grid.Background>
 
         <Grid.RowDefinitions>
@@ -48,7 +45,7 @@
         <Grid
             x:Name="RootGrid"
             Grid.Row="1"
-            Margin="12,12,0,0">
+            Margin="12,12,12,12">
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -65,6 +62,11 @@
                 Grid.Row="1"
                 Grid.Column="0"
                 Margin="0,0,12,0"
+                Width="205"
+                Padding="8"
+                Background="#E812171E"
+                BorderBrush="#243A4654"
+                BorderThickness="1"
                 Frame="{Binding ElementName=RootFrame}"
                 SelectedPageIndex="0">
 
@@ -91,7 +93,8 @@
                 Grid.Row="0"
                 Grid.RowSpan="2"
                 Grid.Column="1"
-                BorderBrush="{DynamicResource SystemAccentBrush}"
+                Background="#E80F141A"
+                BorderBrush="#243A4654"
                 Navigated="RootFrame_Navigated" />
         </Grid>
     </Grid>

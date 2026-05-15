@@ -5,48 +5,68 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-    Title="AboutPage"
-    d:DesignHeight="720"
+    Title="О NullCore"
+    d:DesignHeight="760"
     d:DesignWidth="800"
     Scrollable="True"
     mc:Ignorable="d">
 
+    <ui:UiPage.Resources>
+        <SolidColorBrush x:Key="AboutPanelBrush" Color="#E80F141A" />
+        <SolidColorBrush x:Key="AboutPanelAltBrush" Color="#D9182028" />
+        <SolidColorBrush x:Key="AboutStrokeBrush" Color="#336EE7C8" />
+        <SolidColorBrush x:Key="AboutStrokeMutedBrush" Color="#283D4856" />
+        <SolidColorBrush x:Key="AboutAccentBrush" Color="#FF6EE7C8" />
+        <Style x:Key="AboutMutedTextStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+    </ui:UiPage.Resources>
+
     <StackPanel Margin="0,0,14,14">
-        <Grid Margin="0,0,0,18">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="72" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+        <Border
+            Margin="0,0,0,16"
+            Padding="18"
+            Background="{StaticResource AboutPanelBrush}"
+            BorderBrush="{StaticResource AboutStrokeMutedBrush}"
+            BorderThickness="1"
+            CornerRadius="8">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="76" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
 
-            <Border
-                Width="56"
-                Height="56"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Background="{DynamicResource ControlFillColorDefaultBrush}"
-                BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
-                BorderThickness="1"
-                CornerRadius="8">
-                <Image
-                    Width="38"
-                    Height="38"
-                    Source="pack://application:,,,/Voidstrap.ico" />
-            </Border>
+                <Border
+                    Width="58"
+                    Height="58"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Background="{StaticResource AboutPanelAltBrush}"
+                    BorderBrush="{StaticResource AboutStrokeBrush}"
+                    BorderThickness="1"
+                    CornerRadius="9">
+                    <Image
+                        Width="38"
+                        Height="38"
+                        Source="pack://application:,,,/Voidstrap.ico" />
+                </Border>
 
-            <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                <TextBlock
-                    FontSize="28"
-                    FontWeight="SemiBold"
-                    Text="NullCore" />
-                <TextBlock
-                    Margin="0,4,0,0"
-                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                    Text="Personal Roblox bootstrapper maintained by the NullCore team."
-                    TextWrapping="Wrap" />
-            </StackPanel>
-        </Grid>
+                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <TextBlock
+                        FontSize="29"
+                        FontWeight="SemiBold"
+                        Text="NullCore" />
+                    <TextBlock
+                        Margin="0,5,0,0"
+                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                        Text="Личный Roblox bootstrapper для легких запусков, контроля инстансов и будущих bot-workflow функций."
+                        TextWrapping="Wrap" />
+                </StackPanel>
+            </Grid>
+        </Border>
 
-        <WrapPanel Margin="0,0,0,22">
+        <WrapPanel Margin="0,0,0,18">
             <ui:Anchor
                 Margin="0,0,8,8"
                 Appearance="Secondary"
@@ -67,11 +87,39 @@
                 NavigateUri="https://github.com/T1nkq/NullCore/releases" />
         </WrapPanel>
 
+        <Grid Margin="0,0,0,18">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="12" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <ui:Card Padding="16" Background="{StaticResource AboutPanelAltBrush}" BorderBrush="{StaticResource AboutStrokeMutedBrush}">
+                <StackPanel>
+                    <TextBlock FontSize="18" FontWeight="SemiBold" Text="Фокус проекта" />
+                    <TextBlock
+                        Margin="0,8,0,0"
+                        Style="{StaticResource AboutMutedTextStyle}"
+                        Text="NullCore настраивается вокруг низкого расхода RAM/CPU, быстрого мониторинга Roblox-процессов и понятных настроек для нескольких клиентов." />
+                </StackPanel>
+            </ui:Card>
+
+            <ui:Card Grid.Column="2" Padding="16" Background="{StaticResource AboutPanelAltBrush}" BorderBrush="{StaticResource AboutStrokeMutedBrush}">
+                <StackPanel>
+                    <TextBlock FontSize="18" FontWeight="SemiBold" Text="Команда" />
+                    <TextBlock
+                        Margin="0,8,0,0"
+                        Style="{StaticResource AboutMutedTextStyle}"
+                        Text="Сборка поддерживается t1nkq и DeniskaaaXD. Спонсоры, переводчики и старые upstream-кредиты убраны из интерфейса NullCore." />
+                </StackPanel>
+            </ui:Card>
+        </Grid>
+
         <TextBlock
             Margin="0,0,0,10"
             FontSize="18"
             FontWeight="SemiBold"
-            Text="Core Team" />
+            Text="Разработчики" />
 
         <Grid Margin="0,0,0,22">
             <Grid.ColumnDefinitions>
@@ -80,37 +128,25 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <ui:Card Padding="16">
+            <ui:Card Padding="16" Background="{StaticResource AboutPanelBrush}" BorderBrush="{StaticResource AboutStrokeMutedBrush}">
                 <StackPanel>
-                    <TextBlock
-                        FontSize="20"
-                        FontWeight="SemiBold"
-                        Text="t1nkq" />
-                    <TextBlock
-                        Margin="0,4,0,0"
-                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                        Text="Owner &amp; Developer" />
+                    <TextBlock FontSize="21" FontWeight="SemiBold" Text="t1nkq" />
+                    <TextBlock Margin="0,4,0,0" Foreground="{StaticResource AboutAccentBrush}" Text="Owner &amp; Developer" />
                     <TextBlock
                         Margin="0,10,0,0"
-                        Text="Project owner, NullCore maintainer, and release owner."
-                        TextWrapping="Wrap" />
+                        Style="{StaticResource AboutMutedTextStyle}"
+                        Text="Владелец проекта, основная разработка NullCore, релизы и направление клиента." />
                 </StackPanel>
             </ui:Card>
 
-            <ui:Card Grid.Column="2" Padding="16">
+            <ui:Card Grid.Column="2" Padding="16" Background="{StaticResource AboutPanelBrush}" BorderBrush="{StaticResource AboutStrokeMutedBrush}">
                 <StackPanel>
-                    <TextBlock
-                        FontSize="20"
-                        FontWeight="SemiBold"
-                        Text="DeniskaaaXD" />
-                    <TextBlock
-                        Margin="0,4,0,0"
-                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                        Text="Developer" />
+                    <TextBlock FontSize="21" FontWeight="SemiBold" Text="DeniskaaaXD" />
+                    <TextBlock Margin="0,4,0,0" Foreground="{StaticResource AboutAccentBrush}" Text="Developer" />
                     <TextBlock
                         Margin="0,10,0,0"
-                        Text="NullCore developer."
-                        TextWrapping="Wrap" />
+                        Style="{StaticResource AboutMutedTextStyle}"
+                        Text="Разработчик NullCore и участник доработок клиента." />
                 </StackPanel>
             </ui:Card>
         </Grid>
@@ -120,60 +156,34 @@
                 Margin="0,0,0,10"
                 FontSize="18"
                 FontWeight="SemiBold"
-                Text="Build Information" />
+                Text="Информация о сборке" />
 
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="150" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="28" />
-                    <RowDefinition Height="28" />
-                    <RowDefinition Height="28" />
-                    <RowDefinition Height="28" />
-                </Grid.RowDefinitions>
+            <ui:Card Padding="16" Background="{StaticResource AboutPanelBrush}" BorderBrush="{StaticResource AboutStrokeMutedBrush}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="150" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="28" />
+                        <RowDefinition Height="28" />
+                        <RowDefinition Height="28" />
+                        <RowDefinition Height="28" />
+                    </Grid.RowDefinitions>
 
-                <TextBlock
-                    FontWeight="SemiBold"
-                    Text="Updated"
-                    Visibility="{Binding BuildCommitVisibility, Mode=OneTime}" />
-                <TextBlock
-                    Grid.Column="1"
-                    Text="{Binding BuildTimestamp, Mode=OneTime}"
-                    Visibility="{Binding BuildCommitVisibility, Mode=OneTime}" />
+                    <TextBlock FontWeight="SemiBold" Text="Обновлено" Visibility="{Binding BuildCommitVisibility, Mode=OneTime}" />
+                    <TextBlock Grid.Column="1" Text="{Binding BuildTimestamp, Mode=OneTime}" Visibility="{Binding BuildCommitVisibility, Mode=OneTime}" />
 
-                <TextBlock
-                    Grid.Row="1"
-                    FontWeight="SemiBold"
-                    Text="Version" />
-                <TextBlock
-                    Grid.Row="1"
-                    Grid.Column="1"
-                    Text="{Binding Version, Mode=OneTime}" />
+                    <TextBlock Grid.Row="1" FontWeight="SemiBold" Text="Версия" />
+                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Version, Mode=OneTime}" />
 
-                <TextBlock
-                    Grid.Row="2"
-                    FontWeight="SemiBold"
-                    Text="Commit Hash"
-                    Visibility="{Binding BuildCommitVisibility, Mode=OneTime}" />
-                <TextBlock
-                    Grid.Row="2"
-                    Grid.Column="1"
-                    Text="{Binding BuildMetadata.CommitHash, Mode=OneTime}"
-                    Visibility="{Binding BuildCommitVisibility, Mode=OneTime}" />
+                    <TextBlock Grid.Row="2" FontWeight="SemiBold" Text="Commit Hash" Visibility="{Binding BuildCommitVisibility, Mode=OneTime}" />
+                    <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding BuildMetadata.CommitHash, Mode=OneTime}" Visibility="{Binding BuildCommitVisibility, Mode=OneTime}" />
 
-                <TextBlock
-                    Grid.Row="3"
-                    FontWeight="SemiBold"
-                    Text="Commit Ref"
-                    Visibility="{Binding BuildCommitVisibility, Mode=OneTime}" />
-                <TextBlock
-                    Grid.Row="3"
-                    Grid.Column="1"
-                    Text="{Binding BuildMetadata.CommitRef, Mode=OneTime}"
-                    Visibility="{Binding BuildCommitVisibility, Mode=OneTime}" />
-            </Grid>
+                    <TextBlock Grid.Row="3" FontWeight="SemiBold" Text="Commit Ref" Visibility="{Binding BuildCommitVisibility, Mode=OneTime}" />
+                    <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding BuildMetadata.CommitRef, Mode=OneTime}" Visibility="{Binding BuildCommitVisibility, Mode=OneTime}" />
+                </Grid>
+            </ui:Card>
         </StackPanel>
     </StackPanel>
 </ui:UiPage>
